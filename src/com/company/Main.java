@@ -2,18 +2,14 @@ package com.company;
 
 import edu.salleurl.arcade.Arcade;
 import edu.salleurl.arcade.ArcadeBuilder;
-import edu.salleurl.arcade.labyrinth.model.enums.Direction;
-
-import static edu.salleurl.arcade.labyrinth.model.enums.Direction.*;
 
 public class Main {
 
     public static void main(String[] args) {
-	// write your code here
         System.out.println("Hola");
         Arcade arcade = new ArcadeBuilder()
-                .setLabyrinthColumns(24)
-                .setLabyrinthRows(24)
+                .setLabyrinthColumns(8)
+                .setLabyrinthRows(8)
                 .setWordsColumns(12)
                 .setWordsRows(12)
                 // Opcional, per fixar un input en comptes d'obtenir-ne un d'aleatori
