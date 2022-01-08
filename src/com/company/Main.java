@@ -8,8 +8,8 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Hola");
         Arcade arcade = new ArcadeBuilder()
-                .setLabyrinthColumns(8)
-                .setLabyrinthRows(8)
+                .setLabyrinthColumns(6)
+                .setLabyrinthRows(6)
                 .setWordsColumns(12)
                 .setWordsRows(12)
                 // Opcional, per fixar un input en comptes d'obtenir-ne un d'aleatori

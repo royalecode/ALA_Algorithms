@@ -53,19 +53,25 @@ public class DemoLabyrinthSolver implements LabyrinthSolver {
     }
 
     public boolean solucio(List x, int k) {
+        boolean solution = false;
         this.posicioActual = calcularPosicio(x, k);
-        return posicioActual.getX() == DESTI.getX() && posicioActual.getY() == DESTI.getY();
+        //return posicioActual.getX() == DESTI.getX() && posicioActual.getY() == DESTI.getY();
+        if (posicioActual.getX() < 0 || posicioActual.getY() < 0 || posicioActual.getX() > laberint.length ||
+                posicioActual.getY() > laberint[0].length) return false;
+        if (this.laberint[posicioActual.getX()][posicioActual.getY()].name().equals("EXIT")) solution = true;
+        return solution;
     }
 
     private boolean bona(List x, int k) {
         this.posicioActual = calcularPosicio(x, k);
         Coordenada posicioAnterior = new Coordenada(ORIGEN.getX(), ORIGEN.getY());
 
-        if (this.laberint[posicioActual.getX()][posicioActual.getY()].name().equals("WALL")) {
-            return false;
-        }
+        if (posicioActual.getX() < 0 || posicioActual.getY() < 0 || posicioActual.getX() > laberint.length ||
+                posicioActual.getY() > laberint[0].length) return false;
 
-        for (int i = 0; i < (k-1); i++) {
+        if (this.laberint[posicioActual.getX()][posicioActual.getY()].name().equals("WALL")) return false;
+
+        for (int i = 0; i < (k); i++) {
             if (posicioAnterior.getX() == posicioActual.getX() && posicioAnterior.getY() == posicioActual.getY()) {
                 return false;
             }
@@ -81,13 +87,14 @@ public class DemoLabyrinthSolver implements LabyrinthSolver {
     public void tractarSolucio (List x, int k) {
         if (this.Vmillor > k || this.Vmillor == -1) {
             this.Vmillor = k;
-            this.Xmillor = x;
+            this.Xmillor = new ArrayList<Integer>(x);
+            //this.Xmillor = x;
         }
     }
 
     public void laberintV1 (List x, int k) {
         x.add(k, 0);
-        while ((int) x.get(k) <= 4) {
+        while ((int) x.get(k) < 4) {
             x.set(k,(int) x.get(k) + 1);
 
             if (solucio(x, k)) {
