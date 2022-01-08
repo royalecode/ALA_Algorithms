@@ -56,9 +56,9 @@ public class DemoLabyrinthSolver implements LabyrinthSolver {
         boolean solution = false;
         this.posicioActual = calcularPosicio(x, k);
         //return posicioActual.getX() == DESTI.getX() && posicioActual.getY() == DESTI.getY();
-        if (posicioActual.getX() < 0 || posicioActual.getY() < 0 || posicioActual.getX() > laberint.length ||
-                posicioActual.getY() > laberint[0].length) return false;
-        if (this.laberint[posicioActual.getX()][posicioActual.getY()].name().equals("EXIT")) solution = true;
+        if (posicioActual.getX() < 0 || posicioActual.getY() < 0 || posicioActual.getY() > laberint.length ||
+                posicioActual.getX() > laberint[0].length) return false;
+        if (this.laberint[posicioActual.getY()][posicioActual.getX()].name().equals("EXIT")) solution = true;
         return solution;
     }
 
@@ -66,10 +66,13 @@ public class DemoLabyrinthSolver implements LabyrinthSolver {
         this.posicioActual = calcularPosicio(x, k);
         Coordenada posicioAnterior = new Coordenada(ORIGEN.getX(), ORIGEN.getY());
 
-        if (posicioActual.getX() < 0 || posicioActual.getY() < 0 || posicioActual.getX() > laberint.length ||
-                posicioActual.getY() > laberint[0].length) return false;
+        if (posicioActual.getX() < 0 || posicioActual.getY() < 0 || posicioActual.getY() > laberint.length ||
+                posicioActual.getX() > laberint[0].length) return false;
 
-        if (this.laberint[posicioActual.getX()][posicioActual.getY()].name().equals("WALL")) return false;
+        if (this.laberint[posicioActual.getY()][posicioActual.getX()].name().equals("WALL")) {
+            System.out.println("es paret");
+            return false;
+        }
 
         for (int i = 0; i < (k); i++) {
             if (posicioAnterior.getX() == posicioActual.getX() && posicioAnterior.getY() == posicioActual.getY()) {
