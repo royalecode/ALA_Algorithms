@@ -6,7 +6,12 @@ import edu.salleurl.arcade.ArcadeBuilder;
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("Hola");
+        int labyrinthOption, wordsOption;
+        Menu menu = new Menu();
+        menu.start();
+        labyrinthOption = menu.getLabyrinthoOption();
+        wordsOption = menu.getWordsOption();
+
         Arcade arcade = new ArcadeBuilder()
                 .setLabyrinthColumns(50)
                 .setLabyrinthRows(50)
@@ -15,10 +20,12 @@ public class Main {
                 // Opcional, per fixar un input en comptes d'obtenir-ne un d'aleatori
                 .setSeed(42)
                 // DemoLabyrinthSolver implementa LabyrinthSolver
-                .setLabyrinthSolver(new BacktrackingLabyrinthSolver())
+                .setLabyrinthSolver(new BacktrackingLabyrinthSolverSimple())
                 // DemoWordsSolver implementa WordsSolver
                 .setWordsSolver(new DemoWordsSolver())
                 .build();
+
+
         arcade.run();
 
     }

@@ -1,36 +1,30 @@
 package com.company;
 
 import edu.salleurl.arcade.labyrinth.controller.LabyrinthRenderer;
-import edu.salleurl.arcade.labyrinth.model.LabyrinthSolver;
 import edu.salleurl.arcade.labyrinth.model.enums.Cell;
 import edu.salleurl.arcade.labyrinth.model.enums.Direction;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BacktrackingLabyrinthSolver implements LabyrinthSolver {
+public abstract class BacktrackingLabyrinthSolver {
 
-    private List<Integer> configuracio;
-    private List<Integer> Xmillor;
-    private Cell[][] laberint;
-    private Coordenada posicioActual, ORIGEN;
-    private int Vmillor;
+    protected static final String EXIT = "EXIT";
+    protected static final String START = "START";
+    protected static final String WALL = "WALL";
+
+    protected List<Integer> configuracio;
+    protected List<Integer> Xmillor;
+    protected Cell[][] laberint;
+    protected Coordenada posicioActual, ORIGEN;
+    protected int Vmillor;
 
     public BacktrackingLabyrinthSolver() {
         configuracio = new ArrayList<Integer>();
         this.Vmillor = -1;
     }
 
-    @Override
-    public List<Direction> solve(Cell[][] laberint, LabyrinthRenderer labyrinthRenderer) {
-        this.laberint = laberint;
-        calcularOrigenAndDesti();
-        laberintV1(this.configuracio,0);
-        labyrinthRenderer.render(laberint, translateConfiguration(this.Xmillor));
-        return translateConfiguration(this.Xmillor);
-    }
-
-    private Coordenada calcularPosicio(List<Integer> x, int k) {
+    public Coordenada calcularPosicio(List<Integer> x, int k) {
         Coordenada posicio = new Coordenada(ORIGEN.getX(), ORIGEN.getY());
         for (int i = 0; i < k; i++) {
             if (1 == x.get(i)) posicio.setY(posicio.getY() - 1);
@@ -41,10 +35,10 @@ public class BacktrackingLabyrinthSolver implements LabyrinthSolver {
         return posicio;
     }
 
-    private void calcularOrigenAndDesti() {
+    public void calcularOrigenAndDesti() {
         for (int i = 0; i < this.laberint.length; i++) {
             for (int j = 0; j < this.laberint[i].length; j++) {
-                if (this.laberint[i][j].name().equals("START")) {
+                if (this.laberint[i][j].name().equals(START)) {
                     ORIGEN = new Coordenada(i, j);
                 }
             }
@@ -52,22 +46,21 @@ public class BacktrackingLabyrinthSolver implements LabyrinthSolver {
     }
 
     public boolean solucio(List<Integer> x, int k) {
-        boolean solution = false;
         this.posicioActual = calcularPosicio(x, k);
         if (posicioActual.getX() < 0 || posicioActual.getY() < 0 || posicioActual.getY() > laberint.length ||
                 posicioActual.getX() > laberint[0].length) return false;
-        if (this.laberint[posicioActual.getY()][posicioActual.getX()].name().equals("EXIT")) solution = true;
-        return solution;
+        if (this.laberint[posicioActual.getY()][posicioActual.getX()].name().equals(EXIT)) return true;
+        return false;
     }
 
-    private boolean bona(List<Integer> x, int k) {
+    public boolean bona(List<Integer> x, int k) {
         this.posicioActual = calcularPosicio(x, k);
         Coordenada posicioAnterior = new Coordenada(ORIGEN.getX(), ORIGEN.getY());
 
         if (posicioActual.getX() < 0 || posicioActual.getY() < 0 || posicioActual.getY() > laberint.length ||
                 posicioActual.getX() > laberint[0].length) return false;
 
-        if (this.laberint[posicioActual.getY()][posicioActual.getX()].name().equals("WALL")) {
+        if (this.laberint[posicioActual.getY()][posicioActual.getX()].name().equals(WALL)) {
             return false;
         }
 
