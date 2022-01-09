@@ -23,7 +23,7 @@ public class BacktrackingLabyrinthSolverSimple extends BacktrackingLabyrinthSolv
         laberintV1(this.configuracio,0);
         Instant end = Instant.now();
         Duration timeElapsed = Duration.between(start, end);
-        System.out.println("Time taken: "+ timeElapsed.toMillis() +" milliseconds");
+        System.out.println("Temps de Durada: "+ timeElapsed.toMillis() +" milisegons");
         labyrinthRenderer.render(laberint, translateConfiguration(this.Xmillor));
         return translateConfiguration(this.Xmillor);
     }
