@@ -17,14 +17,6 @@ public class BacktrackingLabyrinthSolverSimple extends BacktrackingLabyrinthSolv
 
     @Override
     public List<Direction> solve(Cell[][] laberint, LabyrinthRenderer labyrinthRenderer) {
-        super.laberint = laberint;
-        calcularOrigenAndDesti();
-        Instant start = Instant.now();
-        laberintV1(this.configuracio,0);
-        Instant end = Instant.now();
-        Duration timeElapsed = Duration.between(start, end);
-        System.out.println("Temps de Durada: "+ timeElapsed.toMillis() +" milisegons");
-        labyrinthRenderer.render(laberint, translateConfiguration(this.Xmillor));
-        return translateConfiguration(this.Xmillor);
+        return startAlgorithm(laberint, labyrinthRenderer);
     }
 }

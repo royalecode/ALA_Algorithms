@@ -4,6 +4,8 @@ import edu.salleurl.arcade.labyrinth.controller.LabyrinthRenderer;
 import edu.salleurl.arcade.labyrinth.model.enums.Cell;
 import edu.salleurl.arcade.labyrinth.model.enums.Direction;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +24,18 @@ public abstract class BacktrackingLabyrinthSolver {
     public BacktrackingLabyrinthSolver() {
         configuracio = new ArrayList<Integer>();
         this.Vmillor = -1;
+    }
+
+    public List<Direction> startAlgorithm (Cell[][] laberint, LabyrinthRenderer labyrinthRenderer) {
+        this.laberint = laberint;
+        calcularOrigenAndDesti();
+        Instant start = Instant.now();
+        laberintV1(this.configuracio,0);
+        Instant end = Instant.now();
+        Duration timeElapsed = Duration.between(start, end);
+        System.out.println("Temps de Durada: "+ timeElapsed.toMillis() +" milisegons");
+        labyrinthRenderer.render(laberint, translateConfiguration(this.Xmillor));
+        return translateConfiguration(this.Xmillor);
     }
 
     public Coordenada calcularPosicio(List<Integer> x, int k) {
