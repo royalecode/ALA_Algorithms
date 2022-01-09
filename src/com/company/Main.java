@@ -24,8 +24,6 @@ public class Main {
                 // DemoWordsSolver implementa WordsSolver
                 .setWordsSolver(new DemoWordsSolver())
                 .build();
-
-
         arcade.run();
 
     }
