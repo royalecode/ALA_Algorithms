@@ -1,6 +1,7 @@
 package com.company;
 
 import edu.salleurl.arcade.labyrinth.controller.LabyrinthRenderer;
+import edu.salleurl.arcade.labyrinth.model.LabyrinthSolver;
 import edu.salleurl.arcade.labyrinth.model.enums.Cell;
 import edu.salleurl.arcade.labyrinth.model.enums.Direction;
 
@@ -21,6 +22,8 @@ public class BacktrackingLabyrinthSolver implements LabyrinthSolver {
     protected Coordenada posicioActual, ORIGEN;
     protected int Vmillor;
 
+    private LabyrinthRenderer labyrinthRenderer;
+
     public BacktrackingLabyrinthSolver() {
         configuracio = new ArrayList<Integer>();
         this.Vmillor = -1;
@@ -29,13 +32,14 @@ public class BacktrackingLabyrinthSolver implements LabyrinthSolver {
     @Override
     public List<Direction> solve (Cell[][] laberint, LabyrinthRenderer labyrinthRenderer) {
         this.laberint = laberint;
+        this.labyrinthRenderer = labyrinthRenderer;
         calcularOrigenAndDesti();
         Instant start = Instant.now();
         laberintV1(this.configuracio,0);
         Instant end = Instant.now();
         Duration timeElapsed = Duration.between(start, end);
         System.out.println("Temps de Durada: "+ timeElapsed.toMillis() +" milisegons");
-        labyrinthRenderer.render(laberint, translateConfiguration(this.Xmillor));
+        labyrinthRenderer.render(this.laberint, translateConfiguration(this.Xmillor));
         return translateConfiguration(this.Xmillor);
     }
 
@@ -104,23 +108,43 @@ public class BacktrackingLabyrinthSolver implements LabyrinthSolver {
         else x.set(k, 0);
         while (x.get(k) < 4) {
             x.set(k, x.get(k) + 1);
-
             if (solucio(x, k)) {
-                if (bona(x,k)) tractarSolucio(x,k);
+                if (bona(x,k)) {
+                    visualize(x, k, 10);
+                    tractarSolucio(x,k);
+                };
             } else {
-                if (bona(x,k)) laberintV1(x, k+1);
+                if (bona(x,k)) {
+                    visualize(x, k, 10);
+                    laberintV1(x, k+1);
+                }
             }
+
+        }
+    }
+    public void visualize(List<Integer> x, int k, int time){
+        labyrinthRenderer.render(this.laberint, translateConfiguration(x, k));
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
-    public List<Direction> translateConfiguration(List<Integer> x) {
+    public List<Direction> translateConfiguration(List<Integer> x, int k) {
         List<Direction> configuracio = new ArrayList<Direction>();
-        for (int i = 0; i < this.Vmillor; i++) {
-            if (1 == x.get(i)) configuracio.add(Direction.UP);
-            if (2 == x.get(i)) configuracio.add(Direction.RIGHT);
-            if (3 == x.get(i)) configuracio.add(Direction.DOWN);
-            if (4 == x.get(i)) configuracio.add(Direction.LEFT);
+        for (int i = 0; i < k; i++) {
+            switch (x.get(i)) {
+                case 1 -> configuracio.add(Direction.UP);
+                case 2 -> configuracio.add(Direction.RIGHT);
+                case 3 -> configuracio.add(Direction.DOWN);
+                case 4 -> configuracio.add(Direction.LEFT);
+            }
         }
         return configuracio;
+    }
+
+    public List<Direction> translateConfiguration(List<Integer> x) {
+        return translateConfiguration(x, this.Vmillor);
     }
 }

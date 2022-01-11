@@ -70,9 +70,13 @@ public class BacktrackingLabyrinthSolverImproved extends BacktrackingLabyrinthSo
             marcar(x, k);
 
             if (solucio(x, k)) {
-                if (bona(x,k)) tractarSolucio(x,k);
+                if (bona(x,k)) {
+                    visualize(x, k, 10);
+                    tractarSolucio(x, k);
+                }
             } else {
                 if (bona(x,k)) {
+                    visualize(x, k, 10);
                     if (this.Vmillor > k || Vmillor == -1) laberintV1(x, k+1);
                 }
             }
@@ -83,11 +87,30 @@ public class BacktrackingLabyrinthSolverImproved extends BacktrackingLabyrinthSo
     public List<Direction> translateConfiguration(List<Integer> x) {
         List<Direction> configuracio = new ArrayList<Direction>();
         for (int i = 0; i < this.Vmillor+1; i++) {
-            if (1 == x.get(i)) configuracio.add(Direction.UP);
-            if (2 == x.get(i)) configuracio.add(Direction.RIGHT);
-            if (3 == x.get(i)) configuracio.add(Direction.DOWN);
-            if (4 == x.get(i)) configuracio.add(Direction.LEFT);
+            switch (x.get(i)) {
+                case 1 -> configuracio.add(Direction.UP);
+                case 2 -> configuracio.add(Direction.RIGHT);
+                case 3 -> configuracio.add(Direction.DOWN);
+                case 4 -> configuracio.add(Direction.LEFT);
+            }
         }
         return configuracio;
     }
+
+/*    public List<Direction> translateConfiguration(List<Integer> x, int k) {
+        List<Direction> configuracio = new ArrayList<Direction>();
+        for (int i = 0; i < k; i++) {
+            switch (x.get(i)) {
+                case 1 -> configuracio.add(Direction.UP);
+                case 2 -> configuracio.add(Direction.RIGHT);
+                case 3 -> configuracio.add(Direction.DOWN);
+                case 4 -> configuracio.add(Direction.LEFT);
+            }
+        }
+        return configuracio;
+    }
+
+    public List<Direction> translateConfiguration(List<Integer> x) {
+        return translateConfiguration(x, this.Vmillor);
+    }*/
 }
