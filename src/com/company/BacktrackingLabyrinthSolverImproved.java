@@ -5,6 +5,10 @@ import edu.salleurl.arcade.labyrinth.model.LabyrinthSolver;
 import edu.salleurl.arcade.labyrinth.model.enums.Cell;
 import edu.salleurl.arcade.labyrinth.model.enums.Direction;
 
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -14,13 +18,13 @@ public class BacktrackingLabyrinthSolverImproved extends BacktrackingLabyrinthSo
 
     private LabyrinthMarcatge m;
 
-    public BacktrackingLabyrinthSolverImproved () {
+    public BacktrackingLabyrinthSolverImproved() {
         super();
         m = new LabyrinthMarcatge();
     }
 
-    public void marcar (List<Integer> x, int k) {
-        if (k>0) m.historial.add(k, new Coordenada(m.historial.get(k-1).getX() , m.historial.get(k-1).getY()));
+    public void marcar(List<Integer> x, int k) {
+        if (k > 0) m.historial.add(k, new Coordenada(m.historial.get(k - 1).getX(), m.historial.get(k - 1).getY()));
         else m.historial.add(k, new Coordenada(ORIGEN.getX(), ORIGEN.getY()));
 
         if (1 == x.get(k)) m.historial.get(k).setY(m.historial.get(k).getY() - 1);
@@ -47,31 +51,27 @@ public class BacktrackingLabyrinthSolverImproved extends BacktrackingLabyrinthSo
         }
 
         //comprova posicio anterior des de origen a actual
-        for (int i = 0; i < (k-1); i++) {
+        for (int i = 0; i < (k - 1); i++) {
             if (m.historial.get(i).getX() == m.historial.get(k).getX()
                     && m.historial.get(i).getY() == m.historial.get(k).getY()) {
                 return false;
             }
         }
-
-        //comprova posicio anterior des de posicio actual a origen
-        /*for (int i = (k-1); i > 0; i--) {
-            if (m.historial.get(i).getX() == m.historial.get(k).getX()
-                    && m.historial.get(i).getY() == m.historial.get(k).getY()) {
-                return false;
-            }
-        }*/
         return true;
     }
 
     @Override
-    public void tractarSolucio (List<Integer> x, int k) {
+    public void tractarSolucio(List<Integer> x, int k) {
+        System.out.println("Vmillor: " + k);
+        System.out.println("Xmillor: " + x.size());
+
         this.Vmillor = k;
+
         this.Xmillor = new ArrayList<Integer>(x);
     }
 
     @Override
-    public void laberintV1 (List<Integer> x, int k) {
+    public void laberintV1(List<Integer> x, int k) {
         if (k >= x.size()) x.add(k, 0);
         else x.set(k, 0);
         while (x.get(k) < 4) {
@@ -79,14 +79,14 @@ public class BacktrackingLabyrinthSolverImproved extends BacktrackingLabyrinthSo
             marcar(x, k);
 
             if (solucio(x, k)) {
-                if (bona(x,k)) {
-                    visualize(x, k, 10);
+                if (bona(x, k)) {
+                    if (isVisualizing) visualize(x, k, 10);
                     tractarSolucio(x, k);
                 }
             } else {
-                if (bona(x,k)) {
-                    visualize(x, k, 10);
-                    if (this.Vmillor > k || Vmillor == -1) laberintV1(x, k+1);
+                if (bona(x, k)) {
+                    if (isVisualizing) visualize(x, k, 10);
+                    if (Vmillor > k || Vmillor == -1) laberintV1(x, k + 1);
                 }
             }
         }

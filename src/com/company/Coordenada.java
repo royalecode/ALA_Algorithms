@@ -27,6 +27,14 @@ public class Coordenada {
         this.y = y;
     }
 
+    @Override
+    public String toString() {
+        return "Coordenada{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
+    }
+
     public Coordenada calcularPosicio(List<Integer> x, int k) {
         Coordenada posicio = new Coordenada(this.x, this.y);
         for (int i = 0; i < k; i++) {
