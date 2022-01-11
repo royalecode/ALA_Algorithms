@@ -5,6 +5,8 @@ import edu.salleurl.arcade.labyrinth.model.LabyrinthSolver;
 import edu.salleurl.arcade.labyrinth.model.enums.Cell;
 import edu.salleurl.arcade.labyrinth.model.enums.Direction;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -45,7 +47,13 @@ public class BacktrackingLabyrinthSolver implements LabyrinthSolver {
         laberintV1(this.configuracio, 0);
         Instant end = Instant.now();
         Duration timeElapsed = Duration.between(start, end);
+        System.out.println("___________________________________________");
         System.out.println("Temps de Durada: " + timeElapsed.toMillis() + " milisegons");
+        System.out.println("size: " + Xmillor.size() + " -||- k: " + Vmillor);
+        System.out.println(Xmillor.toString());
+        System.out.println(translateConfiguration(this.Xmillor).toString());
+        System.out.println(translateConfiguration(this.Xmillor).size());
+        System.out.println("___________________________________________");
         labyrinthRenderer.render(this.laberint, translateConfiguration(this.Xmillor));
         return translateConfiguration(this.Xmillor);
     }
@@ -101,6 +109,9 @@ public class BacktrackingLabyrinthSolver implements LabyrinthSolver {
     }
 
     public void tractarSolucio(List<Integer> x, int k) {
+        System.out.println("Vmillor: " + k);
+        System.out.println("Xmillor: " + x.size());
+
         if (this.Vmillor > k || this.Vmillor == -1) {
             this.Vmillor = k;
             this.Xmillor = new ArrayList<Integer>(x);
@@ -112,15 +123,15 @@ public class BacktrackingLabyrinthSolver implements LabyrinthSolver {
         else x.set(k, 0);
         while (x.get(k) < 4) {
             x.set(k, x.get(k) + 1);
+
             if (solucio(x, k)) {
                 if (bona(x, k)) {
-                    visualize(x, k, 10);
+                    if (isVisualizing) visualize(x, k, 10);
                     tractarSolucio(x, k);
                 }
-                ;
             } else {
                 if (bona(x, k)) {
-                    visualize(x, k, 10);
+                    if (isVisualizing) visualize(x, k, 10);
                     laberintV1(x, k + 1);
                 }
             }
