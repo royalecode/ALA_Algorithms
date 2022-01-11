@@ -1,5 +1,7 @@
 package com.company;
 
+import java.util.List;
+
 public class Coordenada {
     private int x;
     private int y;
@@ -23,5 +25,26 @@ public class Coordenada {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public Coordenada calcularPosicio(List<Integer> x, int k) {
+        Coordenada posicio = new Coordenada(this.x, this.y);
+        for (int i = 0; i < k; i++) {
+            switch (x.get(i)) {
+                case 1 -> posicio.y = posicio.y - 1;
+                case 2 -> posicio.x = posicio.x + 1;
+                case 3 -> posicio.y = posicio.y + 1;
+                case 4 -> posicio.x = posicio.x - 1;
+            }
+        }
+        return posicio;
+    }
+
+    public double calcularDistancia(Coordenada coord) {
+        int distanciaX = Math.abs(this.x - coord.x);
+        int distanciaY = Math.abs(this.y - coord.y);
+        return Math.sqrt(
+                (distanciaX * distanciaX) + (distanciaY * distanciaY)
+        );
     }
 }
