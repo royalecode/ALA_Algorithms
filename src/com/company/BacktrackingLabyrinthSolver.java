@@ -76,7 +76,6 @@ public class BacktrackingLabyrinthSolver implements LabyrinthSolver {
 
     public boolean bona(List<Integer> x, int k) {
         this.posicioActual = ORIGEN.calcularPosicio(x, k);
-        Coordenada posicioAnterior = new Coordenada(ORIGEN.getX(), ORIGEN.getY());
 
         if (posicioActual.getX() < 0 || posicioActual.getY() < 0 || posicioActual.getY() > laberint.length ||
                 posicioActual.getX() > laberint[0].length) return false;
@@ -85,6 +84,8 @@ public class BacktrackingLabyrinthSolver implements LabyrinthSolver {
             return false;
         }
 
+        //versio que comprova si has passat per la posició anterior des de l'origen a la posició actual
+        Coordenada posicioAnterior = new Coordenada(ORIGEN.getX(), ORIGEN.getY());
         for (int i = 0; i < (k); i++) {
             if (posicioAnterior.getX() == posicioActual.getX() &&
                     posicioAnterior.getY() == posicioActual.getY())
@@ -97,6 +98,22 @@ public class BacktrackingLabyrinthSolver implements LabyrinthSolver {
                 case 4 -> posicioAnterior.setX(posicioAnterior.getX() - 1);
             }
         }
+
+        //versio que comprova si has passat per la posició anterior des de l'actual al origen
+        /*Coordenada posicioAnterior = new Coordenada(posicioActual.getX(), posicioActual.getY());
+        for (int i = k; i > 0; i--) {
+
+            switch (x.get(i)) {
+                case 1 -> posicioAnterior.setY(posicioAnterior.getY() + 1);
+                case 2 -> posicioAnterior.setX(posicioAnterior.getX() - 1);
+                case 3 -> posicioAnterior.setY(posicioAnterior.getY() - 1);
+                case 4 -> posicioAnterior.setX(posicioAnterior.getX() + 1);
+            }
+
+            if (posicioAnterior.getX() == posicioActual.getX() &&
+                    posicioAnterior.getY() == posicioActual.getY())
+                return false;
+        }*/
         return true;
     }
 
@@ -117,7 +134,6 @@ public class BacktrackingLabyrinthSolver implements LabyrinthSolver {
                     visualize(x, k, 10);
                     tractarSolucio(x, k);
                 }
-                ;
             } else {
                 if (bona(x, k)) {
                     visualize(x, k, 10);
@@ -138,7 +154,7 @@ public class BacktrackingLabyrinthSolver implements LabyrinthSolver {
 
     public List<Direction> translateConfiguration(List<Integer> x, int k) {
         List<Direction> configuracio = new ArrayList<Direction>();
-        for (int i = 0; i < k; i++) {
+        for (int i = 0; i < this.Vmillor; i++) {
             switch (x.get(i)) {
                 case 1 -> configuracio.add(Direction.UP);
                 case 2 -> configuracio.add(Direction.RIGHT);

@@ -7,8 +7,8 @@ import edu.salleurl.arcade.words.model.WordsSolver;
 
 public class Main {
 
-    private static final int LABYRINTH_COLUMNS = 99;
-    private static final int LABYRINTH_ROWS = 99;
+    private static final int LABYRINTH_COLUMNS = 95;
+    private static final int LABYRINTH_ROWS = 95;
     private static final int WORDS_COLUMNS = 12;
     private static final int WORDS_ROWS = 12;
 

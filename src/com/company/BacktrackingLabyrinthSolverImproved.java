@@ -46,12 +46,21 @@ public class BacktrackingLabyrinthSolverImproved extends BacktrackingLabyrinthSo
             return false;
         }
 
+        //comprova posicio anterior des de origen a actual
         for (int i = 0; i < (k-1); i++) {
             if (m.historial.get(i).getX() == m.historial.get(k).getX()
                     && m.historial.get(i).getY() == m.historial.get(k).getY()) {
                 return false;
             }
         }
+
+        //comprova posicio anterior des de posicio actual a origen
+        /*for (int i = (k-1); i > 0; i--) {
+            if (m.historial.get(i).getX() == m.historial.get(k).getX()
+                    && m.historial.get(i).getY() == m.historial.get(k).getY()) {
+                return false;
+            }
+        }*/
         return true;
     }
 
@@ -86,7 +95,7 @@ public class BacktrackingLabyrinthSolverImproved extends BacktrackingLabyrinthSo
     @Override
     public List<Direction> translateConfiguration(List<Integer> x) {
         List<Direction> configuracio = new ArrayList<Direction>();
-        for (int i = 0; i < this.Vmillor+1; i++) {
+        for (int i = 0; i <= this.Vmillor; i++) {
             switch (x.get(i)) {
                 case 1 -> configuracio.add(Direction.UP);
                 case 2 -> configuracio.add(Direction.RIGHT);
