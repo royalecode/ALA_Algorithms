@@ -10,18 +10,13 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BacktrackingLabyrinthSolverImproved extends BacktrackingLabyrinthSolver implements LabyrinthSolver {
+public class BacktrackingLabyrinthSolverImproved extends BacktrackingLabyrinthSolver {
 
     private LabyrinthMarcatge m;
 
     public BacktrackingLabyrinthSolverImproved () {
         super();
         m = new LabyrinthMarcatge();
-    }
-
-    @Override
-    public List<Direction> solve(Cell[][] laberint, LabyrinthRenderer labyrinthRenderer) {
-        return startAlgorithm(laberint, labyrinthRenderer);
     }
 
     public void marcar (List<Integer> x, int k) {

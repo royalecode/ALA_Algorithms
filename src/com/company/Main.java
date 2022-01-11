@@ -28,7 +28,7 @@ public class Main {
     }
 
     private static LabyrinthSolver getClassSolutionLabyrinth(int option) {
-        if (option == 1) return new BacktrackingLabyrinthSolverSimple();
+        if (option == 1) return new BacktrackingLabyrinthSolver();
         if (option == 2) return new BacktrackingLabyrinthSolverImproved();
         //if (option == 3) return new BranchAndBoundLabryinthSolver();
         return null;

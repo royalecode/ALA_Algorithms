@@ -9,7 +9,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BacktrackingLabyrinthSolver {
+public class BacktrackingLabyrinthSolver implements LabyrinthSolver {
 
     protected static final String EXIT = "EXIT";
     protected static final String START = "START";
@@ -26,7 +26,8 @@ public abstract class BacktrackingLabyrinthSolver {
         this.Vmillor = -1;
     }
 
-    public List<Direction> startAlgorithm (Cell[][] laberint, LabyrinthRenderer labyrinthRenderer) {
+    @Override
+    public List<Direction> solve (Cell[][] laberint, LabyrinthRenderer labyrinthRenderer) {
         this.laberint = laberint;
         calcularOrigenAndDesti();
         Instant start = Instant.now();
