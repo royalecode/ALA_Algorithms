@@ -57,6 +57,14 @@ public class BacktrackingLabyrinthSolverImproved extends BacktrackingLabyrinthSo
                 return false;
             }
         }
+
+        //comprova posicio anterior des de actual a origen
+        /*for (int i = (k - 1); i > 0; i--) {
+            if (m.historial.get(i).getX() == m.historial.get(k).getX()
+                    && m.historial.get(i).getY() == m.historial.get(k).getY()) {
+                return false;
+            }
+        }*/
         return true;
     }
 
