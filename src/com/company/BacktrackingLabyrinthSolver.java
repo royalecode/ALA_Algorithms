@@ -47,13 +47,13 @@ public class BacktrackingLabyrinthSolver implements LabyrinthSolver {
         laberintV1(this.configuracio, 0);
         Instant end = Instant.now();
         Duration timeElapsed = Duration.between(start, end);
-        System.out.println("___________________________________________");
+//        System.out.println("___________________________________________");
         System.out.println("Temps de Durada: " + timeElapsed.toMillis() + " milisegons");
-        System.out.println("size: " + Xmillor.size() + " -||- k: " + Vmillor);
-        System.out.println(Xmillor.toString());
-        System.out.println(translateConfiguration(this.Xmillor).toString());
-        System.out.println(translateConfiguration(this.Xmillor).size());
-        System.out.println("___________________________________________");
+//        System.out.println("size: " + Xmillor.size() + " -||- k: " + Vmillor);
+//        System.out.println(Xmillor.toString());
+//        System.out.println(translateConfiguration(this.Xmillor).toString());
+//        System.out.println(translateConfiguration(this.Xmillor).size());
+//        System.out.println("___________________________________________");
         labyrinthRenderer.render(this.laberint, translateConfiguration(this.Xmillor));
         return translateConfiguration(this.Xmillor);
     }
@@ -85,8 +85,8 @@ public class BacktrackingLabyrinthSolver implements LabyrinthSolver {
     public boolean bona(List<Integer> x, int k) {
         this.posicioActual = ORIGEN.calcularPosicio(x, k);
 
-        if (posicioActual.getX() < 0 || posicioActual.getY() < 0 || posicioActual.getY() > laberint.length ||
-                posicioActual.getX() > laberint[0].length) return false;
+//        if (posicioActual.getX() < 0 || posicioActual.getY() < 0 || posicioActual.getY() > laberint.length ||
+//                posicioActual.getX() > laberint[0].length) return false;
 
         if (this.laberint[posicioActual.getY()][posicioActual.getX()].name().equals(WALL)) {
             return false;

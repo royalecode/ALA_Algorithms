@@ -29,7 +29,7 @@ public class Coordenada {
 
     @Override
     public String toString() {
-        return "Coordenada{" +
+        return "Coordenada {" +
                 "x=" + x +
                 ", y=" + y +
                 '}';
@@ -48,11 +48,17 @@ public class Coordenada {
         return posicio;
     }
 
-    public double calcularDistancia(Coordenada coord) {
+    public double calcularDistanciaEuclidea(Coordenada coord) {
         int distanciaX = Math.abs(this.x - coord.x);
         int distanciaY = Math.abs(this.y - coord.y);
         return Math.sqrt(
                 (distanciaX * distanciaX) + (distanciaY * distanciaY)
         );
+    }
+
+    public double calcularDistanciaManhattan(Coordenada coord) {
+        int distanciaX = Math.abs(this.x - coord.x);
+        int distanciaY = Math.abs(this.y - coord.y);
+        return distanciaX + distanciaY;
     }
 }

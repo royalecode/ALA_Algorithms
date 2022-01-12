@@ -5,10 +5,12 @@ import edu.salleurl.arcade.labyrinth.model.LabyrinthSolver;
 import edu.salleurl.arcade.labyrinth.model.enums.Cell;
 import edu.salleurl.arcade.labyrinth.model.enums.Direction;
 
+import java.io.PrintWriter;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.PriorityQueue;
 
 public class BranchAndBoundLabryinthSolver implements LabyrinthSolver {
 
@@ -16,56 +18,113 @@ public class BranchAndBoundLabryinthSolver implements LabyrinthSolver {
     protected static final String START = "START";
     protected static final String WALL = "WALL";
 
-    protected List<Integer> Xmillor;
     protected Cell[][] laberint;
     protected Coordenada ORIGEN, DESTI;
-    protected int Vmillor;
 
     private LabyrinthRenderer labyrinthRenderer;
+    protected boolean isVisualizing;
+
+    public BranchAndBoundLabryinthSolver(){
+        this.isVisualizing = false;
+    }
+
+    public BranchAndBoundLabryinthSolver(boolean isVisualizing){
+        this.isVisualizing = isVisualizing;
+    }
 
     private class Configuracio {
         public List<Integer> arr;
         public int k;
         public List<Coordenada> m;
-
-        public Configuracio() {
-            this.arr = new ArrayList<Integer>();
-            this.k = 0;
-            this.m = new ArrayList<Coordenada>();
-        }
+        public double valorEstimat;
 
         public Configuracio(ArrayList<Integer> arr, int k, ArrayList<Coordenada> m) {
             this.arr = arr;
             this.k = k;
             this.m = m;
+            this.valorEstimat = Double.MAX_VALUE;
+        }
+
+        @Override
+        public String toString() {
+            return  "\n\tConfiguracio{" +
+                    "\n\t\tk=" + k +
+                    ",\n\t\t valorEstimat=" + valorEstimat +
+                    "\n\t}";
         }
     }
 
-    public BranchAndBoundLabryinthSolver() {
-        this.Vmillor = -1;
-    }
-
     @Override
-    public List<Direction> solve(Cell[][] cells, LabyrinthRenderer labyrinthRenderer) {
-/*      this.laberint = laberint;
+    public List<Direction> solve(Cell[][] laberint, LabyrinthRenderer labyrinthRenderer) {
+        this.laberint = laberint;
         this.labyrinthRenderer = labyrinthRenderer;
         calcularOrigenAndDesti();
         Instant start = Instant.now();
-        laberintV1(this.configuracio, 0);
+        Configuracio resultat = laberintV1();
         Instant end = Instant.now();
         Duration timeElapsed = Duration.between(start, end);
         System.out.println("Temps de Durada: " + timeElapsed.toMillis() + " milisegons");
-        labyrinthRenderer.render(this.laberint, translateConfiguration(this.Xmillor));
-        return translateConfiguration(this.Xmillor); */
-        return null;
+        labyrinthRenderer.render(this.laberint, translateConfiguration(resultat));
+        return translateConfiguration(resultat);
     }
 
-    private void laberintV1() {
+    public Configuracio laberintV1() {
+        int Vmillor = Integer.MAX_VALUE;
+        Configuracio Xmillor = null;
+        Configuracio x;
+        ArrayList<Configuracio> fills;
 
+        PriorityQueue<Configuracio> nodesVius = new PriorityQueue<>(
+                (c1, c2) -> (int) Math.round(c2.valorEstimat - c1.valorEstimat)
+        );
+        nodesVius.add(configuracioArrel());
+
+//        PrintWriter writer = null;
+//        try {
+//            writer = new PrintWriter("nodes.txt", "UTF-8");
+//        } catch (Exception ignored) {}
+
+        while (!nodesVius.isEmpty()) {
+            x = nodesVius.poll();
+
+//            writer.println("------------------------------------------");
+//            writer.println(nodesVius);
+//            writer.println("POLL: " + x.toString());
+
+            fills = expandeix(x);
+            for (Configuracio fill : fills) {
+                if (solucio(fill)) {
+                    if (bona(fill)) {
+                        if (isVisualizing) visualize(fill, 10);
+                        if (valor(fill) < Vmillor) {
+                            Vmillor = valor(fill);
+                            Xmillor = fill;
+                        }
+                    }
+                } else {
+                    if (bona(fill)) {
+                        if (isVisualizing) visualize(fill, 10);
+                        if (valorParcial(fill) < Vmillor) {
+                            fill.valorEstimat = valorEstimat(fill);
+                            nodesVius.add(fill);
+                        }
+                    }
+                }
+            }
+        }
+//        writer.close();
+        return Xmillor;
     }
+
 
     private Configuracio configuracioArrel() {
-        return new Configuracio();
+        ArrayList<Coordenada> m = new ArrayList<>();
+        m.add(ORIGEN);
+        return new Configuracio(
+                new ArrayList<Integer>(),
+                0,
+                m
+        );
     }
 
     private ArrayList<Configuracio> expandeix(Configuracio x) {
@@ -76,8 +135,9 @@ public class BranchAndBoundLabryinthSolver implements LabyrinthSolver {
             aux = new Configuracio(
                     new ArrayList<>(x.arr.subList(0, x.k)),
                     (x.k + 1),
-                    new ArrayList<>(x.m.subList(0, x.k))
+                    new ArrayList<>(x.m.subList(0, x.k+1))
             );
+
             Coordenada coord = new Coordenada(aux.m.get(aux.k - 1).getX(), aux.m.get(aux.k - 1).getY());
             switch (i + 1) {
                 case 1 -> coord.setY(coord.getY() - 1);
@@ -103,7 +163,6 @@ public class BranchAndBoundLabryinthSolver implements LabyrinthSolver {
 
         return posicioActual.getX() == DESTI.getX() &&
                 posicioActual.getY() == DESTI.getY();
-
     }
 
     private boolean bona(Configuracio x) {
@@ -136,8 +195,14 @@ public class BranchAndBoundLabryinthSolver implements LabyrinthSolver {
     private double valorEstimat(Configuracio x) {
         Coordenada posicioActual = x.m.get(x.k);
 
-        double distanciaOrigen = DESTI.calcularDistancia(ORIGEN);
-        double distanciaActual = DESTI.calcularDistancia(posicioActual);
+        /* Heuristica amb distancia Euclidea */
+//        double distanciaOrigen = DESTI.calcularDistanciaEuclidea(ORIGEN);
+//        double distanciaActual = DESTI.calcularDistanciaEuclidea(posicioActual);
+
+        /* Heuristica amb distancia Manhattan */
+        double distanciaOrigen = DESTI.calcularDistanciaManhattan(ORIGEN);
+        double distanciaActual = DESTI.calcularDistanciaManhattan(posicioActual);
+
         return (distanciaOrigen - distanciaActual) *
                 ((laberint.length * laberint[0].length) - x.k);
     }
@@ -152,6 +217,28 @@ public class BranchAndBoundLabryinthSolver implements LabyrinthSolver {
                     DESTI = new Coordenada(i, j);
                 }
             }
+        }
+    }
+
+    public List<Direction> translateConfiguration(Configuracio x) {
+        List<Direction> configuracio = new ArrayList<Direction>();
+        for (int direccio : x.arr) {
+            switch (direccio) {
+                case 1 -> configuracio.add(Direction.UP);
+                case 2 -> configuracio.add(Direction.RIGHT);
+                case 3 -> configuracio.add(Direction.DOWN);
+                case 4 -> configuracio.add(Direction.LEFT);
+            }
+        }
+        return configuracio;
+    }
+
+    public void visualize(Configuracio x, int time) {
+        labyrinthRenderer.render(this.laberint, translateConfiguration(x));
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }

@@ -35,17 +35,16 @@ public class BacktrackingLabyrinthSolverImproved extends BacktrackingLabyrinthSo
 
     @Override
     public boolean solucio(List<Integer> x, int k) {
-        if (m.historial.get(k).getX() < 0 || m.historial.get(k).getY() < 0 || m.historial.get(k).getY() > laberint.length
-                || m.historial.get(k).getX() > laberint[0].length) return false;
+//        if (m.historial.get(k).getX() < 0 || m.historial.get(k).getY() < 0 || m.historial.get(k).getY() > laberint.length
+//                || m.historial.get(k).getX() > laberint[0].length) return false;
         if (this.laberint[m.historial.get(k).getY()][m.historial.get(k).getX()].name().equals(EXIT)) return true;
         return false;
     }
 
     @Override
     public boolean bona(List<Integer> x, int k) {
-        if (m.historial.get(k).getX() < 0 || m.historial.get(k).getY() < 0 || m.historial.get(k).getY() > laberint.length
-                || m.historial.get(k).getX() > laberint[0].length) return false;
-
+//        if (m.historial.get(k).getX() < 0 || m.historial.get(k).getY() < 0 || m.historial.get(k).getY() > laberint.length
+//                || m.historial.get(k).getX() > laberint[0].length) return false;
         if (this.laberint[m.historial.get(k).getY()][m.historial.get(k).getX()].name().equals(WALL)) {
             return false;
         }
@@ -70,11 +69,9 @@ public class BacktrackingLabyrinthSolverImproved extends BacktrackingLabyrinthSo
 
     @Override
     public void tractarSolucio(List<Integer> x, int k) {
-        System.out.println("Vmillor: " + k);
-        System.out.println("Xmillor: " + x.size());
-
+//        System.out.println("Vmillor: " + k);
+//        System.out.println("Xmillor: " + x.size());
         this.Vmillor = k;
-
         this.Xmillor = new ArrayList<Integer>(x);
     }
 
