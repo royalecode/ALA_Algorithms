@@ -26,15 +26,18 @@ public class BranchAndBoundLabryinthSolver implements LabyrinthSolver {
     private class Configuracio {
         public List<Integer> arr;
         public int k;
+        public List<Coordenada> m;
 
         public Configuracio() {
             this.arr = new ArrayList<Integer>();
             this.k = 0;
+            this.m = new ArrayList<Coordenada>();
         }
 
-        public Configuracio(ArrayList<Integer> arr, int k) {
+        public Configuracio(ArrayList<Integer> arr, int k, ArrayList<Coordenada> m) {
             this.arr = arr;
             this.k = k;
+            this.m = m;
         }
     }
 
@@ -57,6 +60,10 @@ public class BranchAndBoundLabryinthSolver implements LabyrinthSolver {
         return null;
     }
 
+    private void laberintV1() {
+
+    }
+
     private Configuracio configuracioArrel() {
         return new Configuracio();
     }
@@ -68,16 +75,25 @@ public class BranchAndBoundLabryinthSolver implements LabyrinthSolver {
         for (i = 0; i < 4; i++) {
             aux = new Configuracio(
                     new ArrayList<>(x.arr.subList(0, x.k)),
-                    (x.k + 1)
+                    (x.k + 1),
+                    new ArrayList<>(x.m.subList(0, x.k))
             );
-            aux.arr.add(i);
+            Coordenada coord = new Coordenada(aux.m.get(aux.k - 1).getX(), aux.m.get(aux.k - 1).getY());
+            switch (i + 1) {
+                case 1 -> coord.setY(coord.getY() - 1);
+                case 2 -> coord.setX(coord.getX() + 1);
+                case 3 -> coord.setY(coord.getY() + 1);
+                case 4 -> coord.setX(coord.getX() - 1);
+            }
+            aux.arr.add(i + 1);
+            aux.m.add(coord);
             fills.add(aux);
         }
         return fills;
     }
 
     private boolean solucio(Configuracio x) {
-        Coordenada posicioActual = ORIGEN.calcularPosicio(x.arr, x.k);
+        Coordenada posicioActual = x.m.get(x.k);
 
         if (posicioActual.getX() < 0 ||
                 posicioActual.getY() < 0 ||
@@ -85,14 +101,13 @@ public class BranchAndBoundLabryinthSolver implements LabyrinthSolver {
                 posicioActual.getX() > laberint[0].length)
             return false;
 
-        return this.laberint[posicioActual.getY()][posicioActual.getX()]
-                .name()
-                .equals(EXIT);
+        return posicioActual.getX() == DESTI.getX() &&
+                posicioActual.getY() == DESTI.getY();
+
     }
 
     private boolean bona(Configuracio x) {
-        Coordenada posicioActual = ORIGEN.calcularPosicio(x.arr, x.k);
-        Coordenada posicioAnterior = new Coordenada(ORIGEN.getX(), ORIGEN.getY());
+        Coordenada posicioActual = x.m.get(x.k);
 
         if (posicioActual.getX() < 0 ||
                 posicioActual.getY() < 0 ||
@@ -103,36 +118,28 @@ public class BranchAndBoundLabryinthSolver implements LabyrinthSolver {
         if (this.laberint[posicioActual.getY()][posicioActual.getX()].name().equals(WALL))
             return false;
 
-        for (int i = 0; i < (x.k); i++) {
-            if (posicioAnterior.getX() == posicioActual.getX() &&
-                    posicioAnterior.getY() == posicioActual.getY())
+        for (int i = 0; i < x.k - 1; i++)
+            if (posicioActual.getX() == x.m.get(i).getX() && posicioActual.getY() == x.m.get(i).getY())
                 return false;
 
-            switch (x.arr.get(i)) {
-                case 1 -> posicioAnterior.setY(posicioAnterior.getY() - 1);
-                case 2 -> posicioAnterior.setX(posicioAnterior.getX() + 1);
-                case 3 -> posicioAnterior.setY(posicioAnterior.getY() + 1);
-                case 4 -> posicioAnterior.setX(posicioAnterior.getX() - 1);
-            }
-        }
         return true;
     }
 
-    private int valor(Configuracio x){
+    private int valor(Configuracio x) {
         return x.k;
     }
 
-    private int valorParcial(Configuracio x){
+    private int valorParcial(Configuracio x) {
         return valor(x);
     }
 
-    private double valorEstimat(Configuracio x){
-        Coordenada posicioActual = ORIGEN.calcularPosicio(x.arr, x.k);
+    private double valorEstimat(Configuracio x) {
+        Coordenada posicioActual = x.m.get(x.k);
 
         double distanciaOrigen = DESTI.calcularDistancia(ORIGEN);
         double distanciaActual = DESTI.calcularDistancia(posicioActual);
         return (distanciaOrigen - distanciaActual) *
-                ((laberint.length*laberint[0].length) - x.k);
+                ((laberint.length * laberint[0].length) - x.k);
     }
 
     public void calcularOrigenAndDesti() {
