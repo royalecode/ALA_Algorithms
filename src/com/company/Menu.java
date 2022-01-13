@@ -45,7 +45,7 @@ public class Menu {
         do {
             System.out.println("Esculliu l'estratègia per resoldre la sopa de lletres");
             System.out.println("\t1. Greedy");
-            System.out.println("\t2. Branch and Bound\n");
+            System.out.println("\t2. Backtracking\n");
 
             System.out.print("Introduiu l'opció (número): ");
             try {

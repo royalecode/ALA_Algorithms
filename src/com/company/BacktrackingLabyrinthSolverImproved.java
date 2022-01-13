@@ -72,6 +72,7 @@ public class BacktrackingLabyrinthSolverImproved extends BacktrackingLabyrinthSo
 //        System.out.println("Vmillor: " + k);
 //        System.out.println("Xmillor: " + x.size());
         this.Vmillor = k;
+
         this.Xmillor = new ArrayList<Integer>(x);
     }
 

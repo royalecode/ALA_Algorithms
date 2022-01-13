@@ -1,22 +1,22 @@
 package com.company;
 
-import edu.salleurl.arcade.Arcade;
 import edu.salleurl.arcade.ArcadeBuilder;
 import edu.salleurl.arcade.labyrinth.model.LabyrinthSolver;
 import edu.salleurl.arcade.words.model.WordsSolver;
 
 public class Main {
 
-    private static final int LABYRINTH_COLUMNS = 95;
-    private static final int LABYRINTH_ROWS = 95;
-    private static final int WORDS_COLUMNS = 12;
-    private static final int WORDS_ROWS = 12;
+    private static final int LABYRINTH_COLUMNS = 33;
+    private static final int LABYRINTH_ROWS = 33;
+    private static final int WORDS_COLUMNS = 13;
+    private static final int WORDS_ROWS = 13;
+    private static final int SEED = 42;
 
     public static void main(String[] args) {
         Menu menu = new Menu();
         menu.start();
 
-        ArcadeBuilder builder = new ArcadeBuilder().setSeed(42);
+        ArcadeBuilder builder = new ArcadeBuilder().setSeed(SEED);
 
         builder.setWordsColumns(WORDS_COLUMNS)
                 .setWordsRows(WORDS_ROWS)
@@ -57,8 +57,8 @@ public class Main {
     }
 
     private static WordsSolver getClassSolutionWords(int option) {
-        if (option == 1) return new DemoWordsSolver();
-        if (option == 2) return new DemoWordsSolver();
+        if (option == 1) return new DemoWordsSolverGreedy();
+        if (option == 2) return new DemoWordsSolverBacktracking();
         return null;
     }
 }

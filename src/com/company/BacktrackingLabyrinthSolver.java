@@ -71,11 +71,11 @@ public class BacktrackingLabyrinthSolver implements LabyrinthSolver {
     public boolean solucio(List<Integer> x, int k) {
         posicioActual = ORIGEN.calcularPosicio(x, k);
 
-        if (posicioActual.getX() < 0 ||
+        /*if (posicioActual.getX() < 0 ||
                 posicioActual.getY() < 0 ||
                 posicioActual.getY() > laberint.length ||
                 posicioActual.getX() > laberint[0].length)
-            return false;
+            return false;*/
 
         return this.laberint[posicioActual.getY()][posicioActual.getX()]
                 .name()
@@ -126,8 +126,8 @@ public class BacktrackingLabyrinthSolver implements LabyrinthSolver {
     }
 
     public void tractarSolucio(List<Integer> x, int k) {
-        System.out.println("Vmillor: " + k);
-        System.out.println("Xmillor: " + x.size());
+        //System.out.println("Vmillor: " + k);
+        //System.out.println("Xmillor: " + x.size());
 
         if (this.Vmillor > k || this.Vmillor == -1) {
             this.Vmillor = k;

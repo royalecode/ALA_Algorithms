@@ -27,6 +27,11 @@ public class Coordenada {
         this.y = y;
     }
 
+    public void setCoordinates (int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
     @Override
     public String toString() {
         return "Coordenada {" +
