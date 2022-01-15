@@ -6,8 +6,13 @@ import edu.salleurl.arcade.words.model.WordsSolver;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.List;
 
 public class BacktrackingWordsSolver implements WordsSolver {
+
+    private static final int DIAGONAL = 1;
+    private static final int VERTICAL = 2;
+    private static final int HORITZONTAL = 3;
 
     private int LONGITUD_PARAULA;
     private String paraula;
@@ -46,8 +51,8 @@ public class BacktrackingWordsSolver implements WordsSolver {
         for (ArrayList<Coordenada> coordenadas : this.Xmillor) {
             System.out.println(coordenadas);
         }
-        wordsRenderer.render(this.sopa, s, translateConfiguration(this.Xmillor.get(0)));
-        return translateConfiguration(this.Xmillor.get(0));
+        wordsRenderer.render(this.sopa, s, translateConfiguration(this.Xmillor.get(0), LONGITUD_PARAULA));
+        return translateConfiguration(this.Xmillor.get(0), LONGITUD_PARAULA);
     }
 
     public boolean solucio(ArrayList<Coordenada> x, int k) {
@@ -70,11 +75,11 @@ public class BacktrackingWordsSolver implements WordsSolver {
 
         if (k == 1) {
             if ((x.get(k).getX() - x.get(0).getX()) == 1 &&
-                    (x.get(k).getY() - x.get(0).getY()) == 1) this.DIRECCION = 1;
+                    (x.get(k).getY() - x.get(0).getY()) == 1) this.DIRECCION = DIAGONAL;
             else if ((x.get(k).getX() - x.get(0).getX()) == 1 &&
-                    x.get(k).getY() == x.get(0).getY()) this.DIRECCION = 2;
+                    x.get(k).getY() == x.get(0).getY()) this.DIRECCION = VERTICAL;
             else if ((x.get(k).getY() - x.get(0).getY()) == 1 &&
-                    x.get(k).getX() == x.get(0).getX()) this.DIRECCION = 3;
+                    x.get(k).getX() == x.get(0).getX()) this.DIRECCION = HORITZONTAL;
             else return false;
         } else if (k > 1) {
             return (checkDirection(x, k));
@@ -92,7 +97,7 @@ public class BacktrackingWordsSolver implements WordsSolver {
     }
 
     public void wordsV1(ArrayList<Coordenada> x, int k) {
-        int numOpcions = 0, fila = 0, columna = 0;
+        int numOpcions, fila = 0, columna = 0;
         if (k >= x.size()) x.add(k, new Coordenada(-1, -1));
         else x.set(k, new Coordenada(-1, -1));
 
@@ -102,12 +107,12 @@ public class BacktrackingWordsSolver implements WordsSolver {
 
             if (solucio(x, k)) {
                 if (bona(x, k)) {
-                    //if (isVisualizing) visualize(x, k, 10);
+                    visualize(x, sopa, this.paraula, k, 200);
                     tractarSolucio(x);
                 }
             } else {
                 if (bona(x, k)) {
-                    //if (isVisualizing) visualize(x, k, 10);
+                    visualize(x, sopa, this.paraula, k, 200);
                     wordsV1(x, k + 1);
                 }
             }
@@ -122,15 +127,15 @@ public class BacktrackingWordsSolver implements WordsSolver {
 
     public boolean checkDirection(ArrayList<Coordenada> x, int i) {
         switch (this.DIRECCION) {
-            case 1:
+            case DIAGONAL:
                 if ((x.get(i).getX() - x.get(i - 1).getX()) != 1 ||
                         (x.get(i).getY() - x.get(i - 1).getY()) != 1) return false;
                 break;
-            case 2:
+            case VERTICAL:
                 if ((x.get(i).getX() - x.get(i - 1).getX()) != 1 ||
                         x.get(i).getY() != x.get(i - 1).getY()) return false;
                 break;
-            case 3:
+            case HORITZONTAL:
                 if ((x.get(i).getY() - x.get(i - 1).getY()) != 1 ||
                         x.get(i).getX() != x.get(i - 1).getX()) return false;
                 break;
@@ -138,13 +143,24 @@ public class BacktrackingWordsSolver implements WordsSolver {
         return true;
     }
 
-    public int[] translateConfiguration (ArrayList<Coordenada> configuracio) {
+    private void visualize(ArrayList<Coordenada> x, char[][] sopa, String s, int numLletres, int ms) {
+        if (this.isVisualizing) {
+            try {
+                Thread.sleep(ms);
+            } catch (Exception ignore) {            }
+            wordsRenderer.render(sopa, s, translateConfiguration(x, numLletres));
+        }
+    }
+
+    public int[] translateConfiguration(ArrayList<Coordenada> configuracio, int numLletres) {
         if (configuracio == null) return new int[0];
         int[] solution = new int[4];
         solution[0] = configuracio.get(0).getX();
         solution[1] = configuracio.get(0).getY();
-        solution[2] = configuracio.get(LONGITUD_PARAULA -1).getX();
-        solution[3] = configuracio.get(LONGITUD_PARAULA -1).getY();
+        solution[2] = configuracio.get(numLletres - 1).getX();
+        solution[3] = configuracio.get(numLletres - 1).getY();
+//        System.out.println("SOLUTION: " + configuracio.toString());
+//        System.out.println("SOLUTION: " + Arrays.toString(solution));
         return solution;
     }
 }

@@ -67,7 +67,7 @@ public class Main {
 
     private static WordsSolver getClassSolutionWords(int option, boolean visualize) {
         if (option == 1) return new GreedyWordsSolver(visualize);
-        if (option == 2) return new BacktrackingWordsSolver();
+        if (option == 2) return new BacktrackingWordsSolver(visualize);
         return null;
     }
 
