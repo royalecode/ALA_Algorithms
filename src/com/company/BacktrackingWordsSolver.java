@@ -7,7 +7,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 
-public class DemoWordsSolverBacktracking implements WordsSolver {
+public class BacktrackingWordsSolver implements WordsSolver {
 
     private int LONGITUD_PARAULA;
     private String paraula;
@@ -20,13 +20,13 @@ public class DemoWordsSolverBacktracking implements WordsSolver {
 
     private WordsRenderer wordsRenderer;
 
-    public DemoWordsSolverBacktracking() {
+    public BacktrackingWordsSolver() {
         this.Vsolucions = 0;
         configuracio = new ArrayList<>();
         this.Xmillor = new ArrayList<>();
     }
 
-    public DemoWordsSolverBacktracking(boolean isVisualizing) {
+    public BacktrackingWordsSolver(boolean isVisualizing) {
         this.Vsolucions = 0;
         configuracio = new ArrayList<>();
         this.isVisualizing = isVisualizing;
