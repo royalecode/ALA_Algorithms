@@ -71,7 +71,7 @@ public class Main {
         return null;
     }
 
-    private static void generateAnalysis(CustomArcadeBuilder builder) {
+    private static void generateAnalysis(ArcadeBuilder builder) {
         WordsSolver wordsAlgorithm = getClassSolutionWords(menu.getWordsOption());
         LabyrinthSolver labyrinthoAlgorithm = getClassSolutionLabyrinth(menu.getLabyrinthoOption());
 
@@ -103,15 +103,19 @@ public class Main {
                 System.out.println("___________________________________________");
                 System.out.println("Dimension: " + i);
 
-                builder.setWordsColumns(5)
-                        .setWordsRows(5)
+                builder.setWordsColumns(i)
+                        .setWordsRows(i)
                         .setWordsSolver(wordsAlgorithm);
 
                 builder.setLabyrinthColumns(i)
                         .setLabyrinthRows(i)
                         .setLabyrinthSolver(labyrinthoAlgorithm);
 
-                builder.customBuild().run();
+                if (builder instanceof CustomArcadeBuilder customArcadeBuilder) {
+                    customArcadeBuilder.customBuild().run();
+                } else {
+                    builder.build().run();
+                }
             }
             AnalysisPersitance.getInstance().exportToFile("data" + j + ".json");
         }
