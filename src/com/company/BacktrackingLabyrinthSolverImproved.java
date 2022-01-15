@@ -1,26 +1,25 @@
 package com.company;
 
-import edu.salleurl.arcade.labyrinth.controller.LabyrinthRenderer;
-import edu.salleurl.arcade.labyrinth.model.LabyrinthSolver;
-import edu.salleurl.arcade.labyrinth.model.enums.Cell;
 import edu.salleurl.arcade.labyrinth.model.enums.Direction;
 
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BacktrackingLabyrinthSolverImproved extends BacktrackingLabyrinthSolver {
+
 
     private LabyrinthMarcatge m;
 
     public BacktrackingLabyrinthSolverImproved() {
         super();
         m = new LabyrinthMarcatge();
+        this.idAnalysis = AnalysisPersitance.LABYRINTH_BACK_IMPROVED;
+    }
+
+    public BacktrackingLabyrinthSolverImproved(boolean visualize) {
+        super(visualize);
+        m = new LabyrinthMarcatge();
+        this.idAnalysis = AnalysisPersitance.LABYRINTH_BACK_IMPROVED;
     }
 
     public void marcar(List<Integer> x, int k) {
