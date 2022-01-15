@@ -51,7 +51,7 @@ public class BacktrackingWordsSolver implements WordsSolver {
 
         int ms = (int) Duration.between(start, end).toMillis();
         if (isAnalysing) AnalysisPersitance.getInstance().fillRecord(AnalysisPersitance.WORDS_BACK, ms);
-        System.out.println("Temps de Durada: " + ms + " milisegons");
+        System.out.println("Temps de Backtracking Words: " + ms + " milisegons");
         for (ArrayList<Coordenada> coordenadas : this.solutions) {
 //            System.out.println(coordenadas);
         }

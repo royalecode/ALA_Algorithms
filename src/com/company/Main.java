@@ -7,10 +7,10 @@ import edu.salleurl.arcade.words.model.WordsSolver;
 import java.util.Date;
 
 public class Main {
-    private static final int LABYRINTH_COLUMNS = 33;
-    private static final int LABYRINTH_ROWS = 33;
-    private static final int WORDS_COLUMNS = 20;
-    private static final int WORDS_ROWS = 20;
+    private static final int LABYRINTH_COLUMNS = 89;
+    private static final int LABYRINTH_ROWS = 89;
+    private static final int WORDS_COLUMNS = 40;
+    private static final int WORDS_ROWS = 40;
     private static final int SEED = 42;
 
     private static final int ANALYSIS_ITERATIONS = 5;
