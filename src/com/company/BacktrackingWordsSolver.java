@@ -39,6 +39,9 @@ public class BacktrackingWordsSolver implements WordsSolver {
     public int[] solve(char[][] sopa, String s, WordsRenderer wordsRenderer) {
         this.sopa = sopa;
         this.LONGITUD_PARAULA = s.length();
+        if (LONGITUD_PARAULA > 4) {
+            System.out.println("debug");
+        }
         this.paraula = s;
         this.wordsRenderer = wordsRenderer;
 
@@ -55,11 +58,26 @@ public class BacktrackingWordsSolver implements WordsSolver {
         for (ArrayList<Coordenada> solution : this.solutions) {
             try {
                 Thread.sleep(1500);
-            } catch (Exception ignore){}
-
-            wordsRenderer.render(this.sopa, s, translateConfiguration(this.solutions.get(0), LONGITUD_PARAULA));
+            } catch (Exception ignore) {
+            }
+            wordsRenderer.render(this.sopa, s, translateConfiguration(solution, LONGITUD_PARAULA));
         }
-        return translateConfiguration(this.solutions.get(0), LONGITUD_PARAULA);
+        try {
+            return translateConfiguration(this.solutions.get(0), LONGITUD_PARAULA);
+        } catch (Exception e) {
+            for (char[] fila: sopa) {
+                for (char c: fila) {
+                    System.out.print(c);
+                }
+                System.out.println("");
+            }
+            System.out.println("--"+paraula);
+            System.out.println(solutions);
+            this.configuracio = new ArrayList<>();
+            wordsV1(this.configuracio, 0);
+
+            return null;
+        }
     }
 
     public boolean solucio(ArrayList<Coordenada> x, int k) {
@@ -106,9 +124,8 @@ public class BacktrackingWordsSolver implements WordsSolver {
         int numOpcions, fila = 0, columna = 0;
         if (k >= x.size()) x.add(k, new Coordenada(-1, -1));
         else x.set(k, new Coordenada(-1, -1));
-        System.out.println("---------------"+x);
 
-        numOpcions = k;
+        numOpcions = 0;
         while (numOpcions < (this.sopa.length * this.sopa[0].length)) {
             x.set(k, new Coordenada(fila, columna));
 
@@ -165,9 +182,9 @@ public class BacktrackingWordsSolver implements WordsSolver {
         int[] solution = new int[4];
         solution[0] = configuracio.get(0).getX();
         solution[1] = configuracio.get(0).getY();
-        System.out.println(paraula);
-        System.out.println(numLletres);
-        System.out.println(configuracio);
+//        System.out.println(paraula);
+//        System.out.println(numLletres);
+//        System.out.println(configuracio);
         solution[2] = configuracio.get(numLletres - 1).getX();
         solution[3] = configuracio.get(numLletres - 1).getY();
 //        System.out.println("SOLUTION: " + configuracio.toString());
