@@ -38,7 +38,7 @@ public class GreedyWordsSolver implements WordsSolver {
 
         int ms = (int) Duration.between(start, end).toMillis();
         if (isAnalysing) AnalysisPersitance.getInstance().fillRecord(AnalysisPersitance.WORDS_GREED, ms);
-        System.out.println("Temps de Greedy: " + ms + " milisegons");
+        System.out.println("Temps de Greedy Words: " + ms + " milisegons");
 
         wordsRenderer.render(sopa, s, translateConfiguration(configuracio, LONGITUD_PARAULA));
         return translateConfiguration(configuracio, LONGITUD_PARAULA);

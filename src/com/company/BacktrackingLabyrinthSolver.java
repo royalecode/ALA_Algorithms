@@ -53,7 +53,7 @@ public class BacktrackingLabyrinthSolver implements LabyrinthSolver {
 
         int ms = (int) Duration.between(start, end).toMillis();
         if (isAnalysing) AnalysisPersitance.getInstance().fillRecord(idAnalysis, ms);
-        System.out.println("Temps de Backtraking: " + ms + " milisegons");
+        System.out.println("Temps de Backtraking Laberint: " + ms + " milisegons");
 
         labyrinthRenderer.render(this.laberint, translateConfiguration(this.Xmillor));
         return translateConfiguration(this.Xmillor);
