@@ -4,30 +4,39 @@ import edu.salleurl.arcade.ArcadeBuilder;
 import edu.salleurl.arcade.labyrinth.model.LabyrinthSolver;
 import edu.salleurl.arcade.words.model.WordsSolver;
 
-public class Main {
+import java.util.Date;
 
-    private static final int LABYRINTH_COLUMNS = 50;
-    private static final int LABYRINTH_ROWS = 50;
+public class Main {
+    private static final int LABYRINTH_COLUMNS = 33;
+    private static final int LABYRINTH_ROWS = 33;
     private static final int WORDS_COLUMNS = 7;
     private static final int WORDS_ROWS = 7;
     private static final int SEED = 42;
 
+    private static final int ANALYSIS_ITERATIONS = 5;
+    private static final int ANALYSIS_MAX_DIMENSION = 200;
+
+    private static Menu menu;
+
     public static void main(String[] args) {
-        Menu menu = new Menu();
+        menu = new Menu();
         menu.start();
 
-        ArcadeBuilder builder = new ArcadeBuilder().setSeed(SEED);
+        if (menu.isAnalyze()) {
+            generateAnalysis(new CustomArcadeBuilder());
+        } else {
+            ArcadeBuilder builder = new ArcadeBuilder().setSeed(SEED);
 
-        builder.setWordsColumns(WORDS_COLUMNS)
-                .setWordsRows(WORDS_ROWS)
-                .setWordsSolver(getClassSolutionWords(menu.getWordsOption()));
+            builder.setWordsColumns(WORDS_COLUMNS)
+                    .setWordsRows(WORDS_ROWS)
+                    .setWordsSolver(getClassSolutionWords(menu.getWordsOption(), menu.isVisualize()));
 
-        builder.setLabyrinthColumns(LABYRINTH_COLUMNS)
-                .setLabyrinthRows(LABYRINTH_ROWS)
-                .setLabyrinthSolver(getClassSolutionLabyrinth(menu.getLabyrinthoOption()));
+            builder.setLabyrinthColumns(LABYRINTH_COLUMNS)
+                    .setLabyrinthRows(LABYRINTH_ROWS)
+                    .setLabyrinthSolver(getClassSolutionLabyrinth(menu.getLabyrinthoOption(), menu.isVisualize()));
 
-        builder.build().run();
-
+            builder.build().run();
+        }
 
 /*        builder.setLabyrinthColumns(LABYRINTH_COLUMNS)
                 .setLabyrinthRows(LABYRINTH_ROWS)
@@ -49,16 +58,59 @@ public class Main {
 //        }
     }
 
-    private static LabyrinthSolver getClassSolutionLabyrinth(int option) {
-        if (option == 1) return new BacktrackingLabyrinthSolver();
-        if (option == 2) return new BacktrackingLabyrinthSolverImproved();
-        if (option == 3) return new BranchAndBoundLabryinthSolver(true);
+    private static LabyrinthSolver getClassSolutionLabyrinth(int option, boolean visualize) {
+        if (option == 1) return new BacktrackingLabyrinthSolver(visualize);
+        if (option == 2) return new BacktrackingLabyrinthSolverImproved(visualize);
+        if (option == 3) return new BranchAndBoundLabryinthSolver(visualize);
         return null;
     }
 
-    private static WordsSolver getClassSolutionWords(int option) {
-        if (option == 1) return new DemoWordsSolverGreedy();
-        if (option == 2) return new DemoWordsSolverBacktracking();
+    private static WordsSolver getClassSolutionWords(int option, boolean visualize) {
+        if (option == 1) return new GreedyWordsSolver(visualize);
+        if (option == 2) return new BacktrackingWordsSolver();
         return null;
+    }
+
+    private static void generateAnalysis(CustomArcadeBuilder builder) {
+        WordsSolver wordsAlgorithm = getClassSolutionWords(menu.getWordsOption(), false);
+        LabyrinthSolver labyrinthoAlgorithm = getClassSolutionLabyrinth(menu.getLabyrinthoOption(), false);
+
+        int wordsAlgorithmId = 0;
+        int labyrinthoAlgorithmId = 0;
+
+        if (wordsAlgorithm instanceof GreedyWordsSolver) {
+            wordsAlgorithmId = AnalysisPersitance.WORDS_GREED;
+        } else if (wordsAlgorithm instanceof BacktrackingWordsSolver) {
+            wordsAlgorithmId = AnalysisPersitance.WORDS_BACK;
+        }
+
+        if (labyrinthoAlgorithm instanceof BacktrackingLabyrinthSolverImproved) {
+            labyrinthoAlgorithmId = AnalysisPersitance.LABYRINTH_BACK_IMPROVED;
+        } else if (labyrinthoAlgorithm instanceof BacktrackingLabyrinthSolver) {
+            labyrinthoAlgorithmId = AnalysisPersitance.LABYRINTH_BACK;
+        } else if (labyrinthoAlgorithm instanceof BranchAndBoundLabryinthSolver) {
+            labyrinthoAlgorithmId = AnalysisPersitance.LABYRINTH_BRANCH;
+        }
+
+        for (int j = 0; j < ANALYSIS_ITERATIONS; j++) {
+            builder.setSeed(new Date().getTime());
+            for (int i = 5; i < ANALYSIS_MAX_DIMENSION; i = i + 2) {
+                AnalysisPersitance.getInstance().createRecord(labyrinthoAlgorithmId, i);
+                AnalysisPersitance.getInstance().createRecord(wordsAlgorithmId, i);
+                System.out.println("___________________________________________");
+                System.out.println("Dimension: " + i);
+
+                builder.setWordsColumns(i)
+                        .setWordsRows(i)
+                        .setWordsSolver(wordsAlgorithm);
+
+                builder.setLabyrinthColumns(i)
+                        .setLabyrinthRows(i)
+                        .setLabyrinthSolver(labyrinthoAlgorithm);
+
+                builder.customBuild().run();
+            }
+            AnalysisPersitance.getInstance().exportToFile("data" + j + ".json");
+        }
     }
 }

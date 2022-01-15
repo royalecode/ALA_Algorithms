@@ -32,7 +32,7 @@ public class BranchAndBoundLabryinthSolver implements LabyrinthSolver {
         this.isVisualizing = isVisualizing;
     }
 
-    private class Configuracio {
+    private static class Configuracio {
         public List<Integer> arr;
         public int k;
         public List<Coordenada> m;
@@ -59,11 +59,15 @@ public class BranchAndBoundLabryinthSolver implements LabyrinthSolver {
         this.laberint = laberint;
         this.labyrinthRenderer = labyrinthRenderer;
         calcularOrigenAndDesti();
+
         Instant start = Instant.now();
         Configuracio resultat = laberintV1();
         Instant end = Instant.now();
-        Duration timeElapsed = Duration.between(start, end);
-        System.out.println("Temps de Durada: " + timeElapsed.toMillis() + " milisegons");
+
+        int ms = (int) Duration.between(start, end).toMillis();
+        AnalysisPersitance.getInstance().fillRecord(AnalysisPersitance.WORDS_GREED, ms);
+        System.out.println("Temps de Durada: " + ms + " milisegons");
+
         labyrinthRenderer.render(this.laberint, translateConfiguration(resultat));
         return translateConfiguration(resultat);
     }
@@ -77,6 +81,7 @@ public class BranchAndBoundLabryinthSolver implements LabyrinthSolver {
         PriorityQueue<Configuracio> nodesVius = new PriorityQueue<>(
                 (c1, c2) -> (int) Math.round(c2.valorEstimat - c1.valorEstimat)
         );
+
         nodesVius.add(configuracioArrel());
 
 //        PrintWriter writer = null;
@@ -130,12 +135,11 @@ public class BranchAndBoundLabryinthSolver implements LabyrinthSolver {
     private ArrayList<Configuracio> expandeix(Configuracio x) {
         ArrayList<Configuracio> fills = new ArrayList<>();
         Configuracio aux;
-        int i, j;
-        for (i = 0; i < 4; i++) {
+        for (int i = 0; i < 4; i++) {
             aux = new Configuracio(
                     new ArrayList<>(x.arr.subList(0, x.k)),
                     (x.k + 1),
-                    new ArrayList<>(x.m.subList(0, x.k+1))
+                    new ArrayList<>(x.m.subList(0, x.k + 1))
             );
 
             Coordenada coord = new Coordenada(aux.m.get(aux.k - 1).getX(), aux.m.get(aux.k - 1).getY());

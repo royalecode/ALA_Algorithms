@@ -5,8 +5,6 @@ import edu.salleurl.arcade.labyrinth.model.LabyrinthSolver;
 import edu.salleurl.arcade.labyrinth.model.enums.Cell;
 import edu.salleurl.arcade.labyrinth.model.enums.Direction;
 
-import java.io.FileWriter;
-import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -18,6 +16,8 @@ public class BacktrackingLabyrinthSolver implements LabyrinthSolver {
     protected static final String START = "START";
     protected static final String WALL = "WALL";
 
+    protected int idAnalysis;
+
     protected List<Integer> configuracio;
     protected List<Integer> Xmillor;
     protected Cell[][] laberint;
@@ -28,11 +28,11 @@ public class BacktrackingLabyrinthSolver implements LabyrinthSolver {
     private LabyrinthRenderer labyrinthRenderer;
 
     public BacktrackingLabyrinthSolver() {
-        configuracio = new ArrayList<Integer>();
-        this.Vmillor = -1;
+        this(false);
     }
 
     public BacktrackingLabyrinthSolver(boolean isVisualizing) {
+        idAnalysis = AnalysisPersitance.LABYRINTH_BACK;
         configuracio = new ArrayList<Integer>();
         this.Vmillor = -1;
         this.isVisualizing = isVisualizing;
@@ -43,18 +43,16 @@ public class BacktrackingLabyrinthSolver implements LabyrinthSolver {
         this.laberint = laberint;
         this.labyrinthRenderer = labyrinthRenderer;
         calcularOrigenAndDesti();
+
         Instant start = Instant.now();
         laberintV1(this.configuracio, 0);
         Instant end = Instant.now();
-        Duration timeElapsed = Duration.between(start, end);
-//        System.out.println("___________________________________________");
-        System.out.println("Temps de Durada: " + timeElapsed.toMillis() + " milisegons");
-//        System.out.println("size: " + Xmillor.size() + " -||- k: " + Vmillor);
-//        System.out.println(Xmillor.toString());
-//        System.out.println(translateConfiguration(this.Xmillor).toString());
-//        System.out.println(translateConfiguration(this.Xmillor).size());
-//        System.out.println("___________________________________________");
-        labyrinthRenderer.render(this.laberint, translateConfiguration(this.Xmillor));
+
+        int ms = (int) Duration.between(start, end).toMillis();
+        AnalysisPersitance.getInstance().fillRecord(idAnalysis, ms);
+        System.out.println("Temps de Backtraking: " + ms + " milisegons");
+
+//        labyrinthRenderer.render(this.laberint, translateConfiguration(this.Xmillor));
         return translateConfiguration(this.Xmillor);
     }
 
