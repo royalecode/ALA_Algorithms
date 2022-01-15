@@ -27,16 +27,13 @@ public class BacktrackingWordsSolver implements WordsSolver {
     private WordsRenderer wordsRenderer;
 
     public BacktrackingWordsSolver() {
-        this.Vsolucions = 0;
-        configuracio = new ArrayList<>();
-        this.Xmillor = new ArrayList<>();
-        this.isVisualizing = false;
-        this.isAnalysing = false;
+        this(false, false);
     }
 
     public BacktrackingWordsSolver(boolean isVisualizing, boolean isAnalysing) {
         this.Vsolucions = 0;
         configuracio = new ArrayList<>();
+        this.Xmillor = new ArrayList<>();
         this.isVisualizing = isVisualizing;
         this.isAnalysing = isAnalysing;
     }
@@ -114,12 +111,12 @@ public class BacktrackingWordsSolver implements WordsSolver {
 
             if (solucio(x, k)) {
                 if (bona(x, k)) {
-                    visualize(x, sopa, this.paraula, k, 200);
+                    visualize(x, sopa, this.paraula, k + 1, 200);
                     tractarSolucio(x);
                 }
             } else {
                 if (bona(x, k)) {
-                    visualize(x, sopa, this.paraula, k, 200);
+                    visualize(x, sopa, this.paraula, k + 1, 200);
                     wordsV1(x, k + 1);
                 }
             }

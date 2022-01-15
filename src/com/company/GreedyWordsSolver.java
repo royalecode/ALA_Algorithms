@@ -91,7 +91,7 @@ public class GreedyWordsSolver implements WordsSolver {
                 }
             }
 //            System.out.println(s.charAt(k) + " character comparing");
-            if (i >= sopa[0].length || j >= sopa.length) return false;
+            if (i >= sopa.length || j >= sopa[0].length) return false;
             if (sopa[i][j] == s.charAt(k)) x.set(k, new Coordenada(i, j));
             else return false;
             visualize(x, sopa, s, k, 200);
