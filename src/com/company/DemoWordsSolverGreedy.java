@@ -30,7 +30,7 @@ public class DemoWordsSolverGreedy implements WordsSolver {
         for (int i = 0; i < LONGITUD_PARAULA; i++) {
             x.add(i, new Coordenada(-1, -1));
         }
-        int i = 0, j = 0;
+        int i = 0, j;
         boolean trobada = false;
 
         while (!trobada && i < sopa.length) {
@@ -56,15 +56,14 @@ public class DemoWordsSolverGreedy implements WordsSolver {
     private boolean comprovarParaula(char[][] sopa, String s, int i, int j, ArrayList<Coordenada> x) {
         if (comprovarHoritzontal(sopa, s, i, j, x)) return true;
         if (comprovarDiagonal(sopa, s, i, j, x)) return true;
-        if (comprovarVertical(sopa, s, i, j, x)) return true;
-        return false;
+        return comprovarVertical(sopa, s, i, j, x);
     }
 
     private boolean comprovarVertical(char[][] sopa, String s, int i, int j, ArrayList<Coordenada> x) {
         for (int k = 1; k < LONGITUD_PARAULA; k++) {
             i++;
             System.out.println(s.charAt(k) + " character comparing");
-            if (i > sopa[0].length || j > sopa.length) return false;
+            if (i >= sopa[0].length || j >= sopa.length) return false;
             if (sopa[i][j] == s.charAt(k)) x.set(k, new Coordenada(i, j));
             else return false;
         }
@@ -76,7 +75,7 @@ public class DemoWordsSolverGreedy implements WordsSolver {
             i++;
             j++;
             System.out.println(s.charAt(k) + " character comparing");
-            if (i > sopa[0].length || j > sopa.length) return false;
+            if (i >= sopa[0].length || j >= sopa.length) return false;
             if (sopa[i][j] == s.charAt(k)) x.set(k, new Coordenada(i, j));
             else return false;
         }
@@ -87,7 +86,7 @@ public class DemoWordsSolverGreedy implements WordsSolver {
         for (int k = 1; k < LONGITUD_PARAULA; k++) {
             j++;
             System.out.println(s.charAt(k) + " character comparing");
-            if (i > sopa[0].length || j > sopa.length) return false;
+            if (i >= sopa[0].length || j >= sopa.length) return false;
             if (sopa[i][j] == s.charAt(k)) x.set(k, new Coordenada(i, j));
             else return false;
         }

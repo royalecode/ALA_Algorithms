@@ -6,10 +6,10 @@ import edu.salleurl.arcade.words.model.WordsSolver;
 
 public class Main {
 
-    private static final int LABYRINTH_COLUMNS = 33;
-    private static final int LABYRINTH_ROWS = 33;
-    private static final int WORDS_COLUMNS = 13;
-    private static final int WORDS_ROWS = 13;
+    private static final int LABYRINTH_COLUMNS = 50;
+    private static final int LABYRINTH_ROWS = 50;
+    private static final int WORDS_COLUMNS = 7;
+    private static final int WORDS_ROWS = 7;
     private static final int SEED = 42;
 
     public static void main(String[] args) {
@@ -52,7 +52,7 @@ public class Main {
     private static LabyrinthSolver getClassSolutionLabyrinth(int option) {
         if (option == 1) return new BacktrackingLabyrinthSolver();
         if (option == 2) return new BacktrackingLabyrinthSolverImproved();
-        if (option == 3) return new BranchAndBoundLabryinthSolver();
+        if (option == 3) return new BranchAndBoundLabryinthSolver(true);
         return null;
     }
 
