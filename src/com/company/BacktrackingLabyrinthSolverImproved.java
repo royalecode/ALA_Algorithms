@@ -16,8 +16,8 @@ public class BacktrackingLabyrinthSolverImproved extends BacktrackingLabyrinthSo
         this.idAnalysis = AnalysisPersitance.LABYRINTH_BACK_IMPROVED;
     }
 
-    public BacktrackingLabyrinthSolverImproved(boolean visualize) {
-        super(visualize);
+    public BacktrackingLabyrinthSolverImproved(boolean visualize, boolean analyse) {
+        super(visualize, analyse);
         m = new LabyrinthMarcatge();
         this.idAnalysis = AnalysisPersitance.LABYRINTH_BACK_IMPROVED;
     }
@@ -34,20 +34,14 @@ public class BacktrackingLabyrinthSolverImproved extends BacktrackingLabyrinthSo
 
     @Override
     public boolean solucio(List<Integer> x, int k) {
-//        if (m.historial.get(k).getX() < 0 || m.historial.get(k).getY() < 0 || m.historial.get(k).getY() > laberint.length
-//                || m.historial.get(k).getX() > laberint[0].length) return false;
-        if (this.laberint[m.historial.get(k).getY()][m.historial.get(k).getX()].name().equals(EXIT)) return true;
-        return false;
+        return this.laberint[m.historial.get(k).getY()][m.historial.get(k).getX()].name().equals(EXIT);
     }
 
     @Override
     public boolean bona(List<Integer> x, int k) {
-//        if (m.historial.get(k).getX() < 0 || m.historial.get(k).getY() < 0 || m.historial.get(k).getY() > laberint.length
-//                || m.historial.get(k).getX() > laberint[0].length) return false;
         if (this.laberint[m.historial.get(k).getY()][m.historial.get(k).getX()].name().equals(WALL)) {
             return false;
         }
-
         //comprova posicio anterior des de origen a actual
         for (int i = 0; i < (k - 1); i++) {
             if (m.historial.get(i).getX() == m.historial.get(k).getX()
@@ -96,35 +90,4 @@ public class BacktrackingLabyrinthSolverImproved extends BacktrackingLabyrinthSo
             }
         }
     }
-
-    @Override
-    public List<Direction> translateConfiguration(List<Integer> x) {
-        List<Direction> configuracio = new ArrayList<Direction>();
-        for (int i = 0; i <= this.Vmillor; i++) {
-            switch (x.get(i)) {
-                case 1 -> configuracio.add(Direction.UP);
-                case 2 -> configuracio.add(Direction.RIGHT);
-                case 3 -> configuracio.add(Direction.DOWN);
-                case 4 -> configuracio.add(Direction.LEFT);
-            }
-        }
-        return configuracio;
-    }
-
-/*    public List<Direction> translateConfiguration(List<Integer> x, int k) {
-        List<Direction> configuracio = new ArrayList<Direction>();
-        for (int i = 0; i < k; i++) {
-            switch (x.get(i)) {
-                case 1 -> configuracio.add(Direction.UP);
-                case 2 -> configuracio.add(Direction.RIGHT);
-                case 3 -> configuracio.add(Direction.DOWN);
-                case 4 -> configuracio.add(Direction.LEFT);
-            }
-        }
-        return configuracio;
-    }
-
-    public List<Direction> translateConfiguration(List<Integer> x) {
-        return translateConfiguration(x, this.Vmillor);
-    }*/
 }

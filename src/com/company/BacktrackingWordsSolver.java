@@ -21,7 +21,8 @@ public class BacktrackingWordsSolver implements WordsSolver {
     private ArrayList<ArrayList<Coordenada>> Xmillor;
     private char[][] sopa;
     private int Vsolucions;
-    private boolean isVisualizing;
+    private final boolean isVisualizing;
+    private final boolean isAnalysing;
 
     private WordsRenderer wordsRenderer;
 
@@ -29,12 +30,15 @@ public class BacktrackingWordsSolver implements WordsSolver {
         this.Vsolucions = 0;
         configuracio = new ArrayList<>();
         this.Xmillor = new ArrayList<>();
+        this.isVisualizing = false;
+        this.isAnalysing = false;
     }
 
-    public BacktrackingWordsSolver(boolean isVisualizing) {
+    public BacktrackingWordsSolver(boolean isVisualizing, boolean isAnalysing) {
         this.Vsolucions = 0;
         configuracio = new ArrayList<>();
         this.isVisualizing = isVisualizing;
+        this.isAnalysing = isAnalysing;
     }
 
     @Override
@@ -43,11 +47,14 @@ public class BacktrackingWordsSolver implements WordsSolver {
         this.LONGITUD_PARAULA = s.length();
         this.paraula = s;
         this.wordsRenderer = wordsRenderer;
+
         Instant start = Instant.now();
         wordsV1(this.configuracio, 0);
         Instant end = Instant.now();
-        Duration timeElapsed = Duration.between(start, end);
-        System.out.println("Temps de Durada: " + timeElapsed.toMillis() + " milisegons");
+
+        int ms = (int) Duration.between(start, end).toMillis();
+        if (isAnalysing) AnalysisPersitance.getInstance().fillRecord(AnalysisPersitance.WORDS_BACK, ms);
+        System.out.println("Temps de Durada: " + ms + " milisegons");
         for (ArrayList<Coordenada> coordenadas : this.Xmillor) {
             System.out.println(coordenadas);
         }

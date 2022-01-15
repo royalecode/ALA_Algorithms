@@ -23,19 +23,22 @@ public class BacktrackingLabyrinthSolver implements LabyrinthSolver {
     protected Cell[][] laberint;
     protected Coordenada posicioActual, ORIGEN;
     protected int Vmillor;
-    protected boolean isVisualizing;
+    protected final boolean isVisualizing;
+    private final boolean isAnalysing;
+
 
     private LabyrinthRenderer labyrinthRenderer;
 
     public BacktrackingLabyrinthSolver() {
-        this(false);
+        this(false, false);
     }
 
-    public BacktrackingLabyrinthSolver(boolean isVisualizing) {
+    public BacktrackingLabyrinthSolver(boolean isVisualizing, boolean isAnalysing) {
         idAnalysis = AnalysisPersitance.LABYRINTH_BACK;
-        configuracio = new ArrayList<Integer>();
+        configuracio = new ArrayList<>();
         this.Vmillor = -1;
         this.isVisualizing = isVisualizing;
+        this.isAnalysing = isAnalysing;
     }
 
     @Override
@@ -49,10 +52,10 @@ public class BacktrackingLabyrinthSolver implements LabyrinthSolver {
         Instant end = Instant.now();
 
         int ms = (int) Duration.between(start, end).toMillis();
-        AnalysisPersitance.getInstance().fillRecord(idAnalysis, ms);
+        if (isAnalysing) AnalysisPersitance.getInstance().fillRecord(idAnalysis, ms);
         System.out.println("Temps de Backtraking: " + ms + " milisegons");
 
-//        labyrinthRenderer.render(this.laberint, translateConfiguration(this.Xmillor));
+        labyrinthRenderer.render(this.laberint, translateConfiguration(this.Xmillor));
         return translateConfiguration(this.Xmillor);
     }
 
@@ -69,12 +72,6 @@ public class BacktrackingLabyrinthSolver implements LabyrinthSolver {
     public boolean solucio(List<Integer> x, int k) {
         posicioActual = ORIGEN.calcularPosicio(x, k);
 
-        /*if (posicioActual.getX() < 0 ||
-                posicioActual.getY() < 0 ||
-                posicioActual.getY() > laberint.length ||
-                posicioActual.getX() > laberint[0].length)
-            return false;*/
-
         return this.laberint[posicioActual.getY()][posicioActual.getX()]
                 .name()
                 .equals(EXIT);
@@ -82,9 +79,6 @@ public class BacktrackingLabyrinthSolver implements LabyrinthSolver {
 
     public boolean bona(List<Integer> x, int k) {
         this.posicioActual = ORIGEN.calcularPosicio(x, k);
-
-//        if (posicioActual.getX() < 0 || posicioActual.getY() < 0 || posicioActual.getY() > laberint.length ||
-//                posicioActual.getX() > laberint[0].length) return false;
 
         if (this.laberint[posicioActual.getY()][posicioActual.getX()].name().equals(WALL)) {
             return false;
@@ -138,7 +132,6 @@ public class BacktrackingLabyrinthSolver implements LabyrinthSolver {
         else x.set(k, 0);
         while (x.get(k) < 4) {
             x.set(k, x.get(k) + 1);
-
             if (solucio(x, k)) {
                 if (bona(x, k)) {
                     if (isVisualizing) visualize(x, k, 10);
@@ -164,7 +157,7 @@ public class BacktrackingLabyrinthSolver implements LabyrinthSolver {
 
     public List<Direction> translateConfiguration(List<Integer> x, int k) {
         List<Direction> configuracio = new ArrayList<Direction>();
-        for (int i = 0; i < this.Vmillor; i++) {
+        for (int i = 0; i <= k; i++) {
             switch (x.get(i)) {
                 case 1 -> configuracio.add(Direction.UP);
                 case 2 -> configuracio.add(Direction.RIGHT);
