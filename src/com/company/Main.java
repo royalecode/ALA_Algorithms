@@ -9,8 +9,8 @@ import java.util.Date;
 public class Main {
     private static final int LABYRINTH_COLUMNS = 33;
     private static final int LABYRINTH_ROWS = 33;
-    private static final int WORDS_COLUMNS = 10;
-    private static final int WORDS_ROWS = 30;
+    private static final int WORDS_COLUMNS = 20;
+    private static final int WORDS_ROWS = 20;
     private static final int SEED = 42;
 
     private static final int ANALYSIS_ITERATIONS = 5;

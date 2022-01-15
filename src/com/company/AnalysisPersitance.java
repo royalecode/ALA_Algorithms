@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +35,6 @@ public class AnalysisPersitance {
     private final List<Pair> LabyrinthBranchAndBoundData;
     private final List<Pair> WordsBacktrakingData;
     private final List<Pair> WordsGreedyData;
-    private final Gson gson;
 
     private AnalysisPersitance() {
         LabyrinthBacktrakingData = new ArrayList<>();
@@ -44,7 +42,6 @@ public class AnalysisPersitance {
         LabyrinthBranchAndBoundData = new ArrayList<>();
         WordsBacktrakingData = new ArrayList<>();
         WordsGreedyData = new ArrayList<>();
-        gson = new GsonBuilder().setPrettyPrinting().create();
     }
 
     public static AnalysisPersitance getInstance() {
@@ -75,17 +72,18 @@ public class AnalysisPersitance {
             case LABYRINTH_BACK ->
                     LabyrinthBacktrakingData.get(LabyrinthBacktrakingData.size() - 1).ms = ms;
             case LABYRINTH_BACK_IMPROVED ->
-                    LabyrinthBacktrakingImprovedData.get(LabyrinthBacktrakingData.size() - 1).ms = ms;
+                    LabyrinthBacktrakingImprovedData.get(LabyrinthBacktrakingImprovedData.size() - 1).ms = ms;
             case LABYRINTH_BRANCH ->
-                    LabyrinthBranchAndBoundData.get(LabyrinthBacktrakingData.size() - 1).ms = ms;
+                    LabyrinthBranchAndBoundData.get(LabyrinthBranchAndBoundData.size() - 1).ms = ms;
             case WORDS_BACK ->
-                    WordsBacktrakingData.get(LabyrinthBacktrakingData.size() - 1).ms = ms;
+                    WordsBacktrakingData.get(WordsBacktrakingData.size() - 1).ms = ms;
             case WORDS_GREED ->
-                    WordsGreedyData.get(LabyrinthBacktrakingData.size() - 1).ms = ms;
+                    WordsGreedyData.get(WordsGreedyData.size() - 1).ms = ms;
         }
     }
 
     public String toJson() {
+        Gson gson = new Gson();
         return gson.toJson(instance, AnalysisPersitance.class);
     }
 
@@ -93,10 +91,12 @@ public class AnalysisPersitance {
         FileWriter myWriter = null;
         try {
             myWriter = new FileWriter(filename);
+            System.out.println(this.toJson());
             myWriter.write(this.toJson());
             myWriter.close();
         } catch (Exception e) {
             System.out.println(" -- ERROR: al guardar la persistencia!! --");
+            e.printStackTrace();
         }
     }
 }

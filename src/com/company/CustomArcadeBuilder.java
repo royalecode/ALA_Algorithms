@@ -1,6 +1,5 @@
 package com.company;
 
-import edu.salleurl.arcade.Arcade;
 import edu.salleurl.arcade.ArcadeBuilder;
 import edu.salleurl.arcade.labyrinth.model.LabyrinthGenerator;
 import edu.salleurl.arcade.labyrinth.model.LabyrinthSolver;

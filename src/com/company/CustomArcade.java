@@ -5,7 +5,6 @@
 
 package com.company;
 
-import edu.salleurl.arcade.Arcade;
 import edu.salleurl.arcade.labyrinth.controller.LabyrinthController;
 import edu.salleurl.arcade.labyrinth.model.LabyrinthSolver;
 import edu.salleurl.arcade.labyrinth.model.enums.Cell;
@@ -13,9 +12,6 @@ import edu.salleurl.arcade.labyrinth.view.JLabyrinthPanel;
 import edu.salleurl.arcade.words.controller.WordsController;
 import edu.salleurl.arcade.words.model.WordsSolver;
 import edu.salleurl.arcade.words.view.JWordsPanel;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 
 public class CustomArcade {
     private Cell[][] labyrinth;

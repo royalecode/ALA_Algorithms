@@ -6,7 +6,6 @@ import edu.salleurl.arcade.words.model.WordsSolver;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.List;
 
 public class BacktrackingWordsSolver implements WordsSolver {
 
@@ -18,9 +17,8 @@ public class BacktrackingWordsSolver implements WordsSolver {
     private String paraula;
     private int DIRECCION;
     private ArrayList<Coordenada> configuracio;
-    private ArrayList<ArrayList<Coordenada>> Xmillor;
+    private ArrayList<ArrayList<Coordenada>> solutions;
     private char[][] sopa;
-    private int Vsolucions;
     private final boolean isVisualizing;
     private final boolean isAnalysing;
 
@@ -31,9 +29,8 @@ public class BacktrackingWordsSolver implements WordsSolver {
     }
 
     public BacktrackingWordsSolver(boolean isVisualizing, boolean isAnalysing) {
-        this.Vsolucions = 0;
         configuracio = new ArrayList<>();
-        this.Xmillor = new ArrayList<>();
+        this.solutions = new ArrayList<>();
         this.isVisualizing = isVisualizing;
         this.isAnalysing = isAnalysing;
     }
@@ -52,11 +49,17 @@ public class BacktrackingWordsSolver implements WordsSolver {
         int ms = (int) Duration.between(start, end).toMillis();
         if (isAnalysing) AnalysisPersitance.getInstance().fillRecord(AnalysisPersitance.WORDS_BACK, ms);
         System.out.println("Temps de Durada: " + ms + " milisegons");
-        for (ArrayList<Coordenada> coordenadas : this.Xmillor) {
-            System.out.println(coordenadas);
+        for (ArrayList<Coordenada> coordenadas : this.solutions) {
+//            System.out.println(coordenadas);
         }
-        wordsRenderer.render(this.sopa, s, translateConfiguration(this.Xmillor.get(0), LONGITUD_PARAULA));
-        return translateConfiguration(this.Xmillor.get(0), LONGITUD_PARAULA);
+        for (ArrayList<Coordenada> solution : this.solutions) {
+            try {
+                Thread.sleep(1500);
+            } catch (Exception ignore){}
+
+            wordsRenderer.render(this.sopa, s, translateConfiguration(this.solutions.get(0), LONGITUD_PARAULA));
+        }
+        return translateConfiguration(this.solutions.get(0), LONGITUD_PARAULA);
     }
 
     public boolean solucio(ArrayList<Coordenada> x, int k) {
@@ -96,14 +99,14 @@ public class BacktrackingWordsSolver implements WordsSolver {
         //System.out.println("soluciooon");
         //System.out.println(x);
         //System.out.println(this.DIRECCION);
-        this.Xmillor.add(Vsolucions, new ArrayList<>(x));
-        this.Vsolucions++;
+        this.solutions.add(new ArrayList<>(x));
     }
 
     public void wordsV1(ArrayList<Coordenada> x, int k) {
         int numOpcions, fila = 0, columna = 0;
         if (k >= x.size()) x.add(k, new Coordenada(-1, -1));
         else x.set(k, new Coordenada(-1, -1));
+        System.out.println("---------------"+x);
 
         numOpcions = k;
         while (numOpcions < (this.sopa.length * this.sopa[0].length)) {
@@ -122,8 +125,8 @@ public class BacktrackingWordsSolver implements WordsSolver {
             }
             columna++;
             if (columna == this.sopa[0].length) {
-               fila++;
-               columna = 0;
+                fila++;
+                columna = 0;
             }
             numOpcions++;
         }
@@ -151,7 +154,8 @@ public class BacktrackingWordsSolver implements WordsSolver {
         if (this.isVisualizing) {
             try {
                 Thread.sleep(ms);
-            } catch (Exception ignore) {            }
+            } catch (Exception ignore) {
+            }
             wordsRenderer.render(sopa, s, translateConfiguration(x, numLletres));
         }
     }
@@ -161,6 +165,9 @@ public class BacktrackingWordsSolver implements WordsSolver {
         int[] solution = new int[4];
         solution[0] = configuracio.get(0).getX();
         solution[1] = configuracio.get(0).getY();
+        System.out.println(paraula);
+        System.out.println(numLletres);
+        System.out.println(configuracio);
         solution[2] = configuracio.get(numLletres - 1).getX();
         solution[3] = configuracio.get(numLletres - 1).getY();
 //        System.out.println("SOLUTION: " + configuracio.toString());

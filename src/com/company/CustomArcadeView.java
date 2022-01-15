@@ -16,7 +16,7 @@ class CustomArcadeView extends JFrame {
     private static final String LABYRINTH = "Arcade - Labyrinth";
     private static final String WORDS = "Arcade - Words";
     private String card;
-    private CardLayout cardLayout = new CardLayout();
+    private final CardLayout cardLayout = new CardLayout();
 
     public CustomArcadeView(JLabyrinthPanel jLabyrinthPanel, JWordsPanel jWordsPanel) {
         this.setLayout(this.cardLayout);
@@ -44,16 +44,17 @@ class CustomArcadeView extends JFrame {
                 }
         }
 
-        switch(var2) {
-            case 0:
+        switch (var2) {
+            case 0 -> {
                 this.cardLayout.show(this.getContentPane(), "Arcade - Words");
                 this.card = "Arcade - Words";
                 this.setTitle("Arcade - Words");
-                break;
-            case 1:
+            }
+            case 1 -> {
                 this.cardLayout.show(this.getContentPane(), "Arcade - Labyrinth");
                 this.card = "Arcade - Labyrinth";
                 this.setTitle("Arcade - Labyrinth");
+            }
         }
         this.pack();
         this.setLocationRelativeTo((Component)null);
