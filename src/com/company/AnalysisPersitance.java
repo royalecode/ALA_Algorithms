@@ -31,12 +31,12 @@ public class AnalysisPersitance {
 
     private static AnalysisPersitance instance;
 
-    private List<Pair> LabyrinthBacktrakingData;
-    private List<Pair> LabyrinthBacktrakingImprovedData;
-    private List<Pair> LabyrinthBranchAndBoundData;
-    private List<Pair> WordsBacktrakingData;
-    private List<Pair> WordsGreedyData;
-    private Gson gson;
+    private final List<Pair> LabyrinthBacktrakingData;
+    private final List<Pair> LabyrinthBacktrakingImprovedData;
+    private final List<Pair> LabyrinthBranchAndBoundData;
+    private final List<Pair> WordsBacktrakingData;
+    private final List<Pair> WordsGreedyData;
+    private final Gson gson;
 
     private AnalysisPersitance() {
         LabyrinthBacktrakingData = new ArrayList<>();
@@ -93,7 +93,7 @@ public class AnalysisPersitance {
         FileWriter myWriter = null;
         try {
             myWriter = new FileWriter(filename);
-            myWriter.write("Files in Java might be tricky, but it is fun enough!");
+            myWriter.write(this.toJson());
             myWriter.close();
         } catch (Exception e) {
             System.out.println(" -- ERROR: al guardar la persistencia!! --");

@@ -15,13 +15,16 @@ public class GreedyWordsSolver implements WordsSolver {
     private int LONGITUD_PARAULA;
     private WordsRenderer wordsRenderer;
     private final boolean isVisualizing;
+    private final boolean isAnalysing;
 
     public GreedyWordsSolver() {
         this.isVisualizing = false;
+        this.isAnalysing = false;
     }
 
-    public GreedyWordsSolver(boolean isVisualizing) {
+    public GreedyWordsSolver(boolean isVisualizing, boolean isAnalysing) {
         this.isVisualizing = isVisualizing;
+        this.isAnalysing = false;
     }
 
     @Override
@@ -34,13 +37,11 @@ public class GreedyWordsSolver implements WordsSolver {
         Instant end = Instant.now();
 
         int ms = (int) Duration.between(start, end).toMillis();
-        AnalysisPersitance.getInstance().fillRecord(AnalysisPersitance.WORDS_GREED, ms);
+        if (isAnalysing) AnalysisPersitance.getInstance().fillRecord(AnalysisPersitance.WORDS_GREED, ms);
         System.out.println("Temps de Greedy: " + ms + " milisegons");
 
-        // System.out.println(this.configuracio);
-//        wordsRenderer.render(sopa, s, translateConfiguration(this.configuracio, LONGITUD_PARAULA));
+        wordsRenderer.render(sopa, s, translateConfiguration(configuracio, LONGITUD_PARAULA));
         return translateConfiguration(configuracio, LONGITUD_PARAULA);
-//        return null;
     }
 
     public ArrayList<Coordenada> wordsV1(char[][] sopa, String paraula) {

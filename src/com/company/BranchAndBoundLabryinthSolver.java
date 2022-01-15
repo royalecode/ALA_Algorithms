@@ -22,14 +22,16 @@ public class BranchAndBoundLabryinthSolver implements LabyrinthSolver {
     protected Coordenada ORIGEN, DESTI;
 
     private LabyrinthRenderer labyrinthRenderer;
-    protected boolean isVisualizing;
+    protected final boolean isVisualizing;
+    protected final boolean isAnalysing;
 
     public BranchAndBoundLabryinthSolver(){
-        this.isVisualizing = false;
+        this(false, false);
     }
 
-    public BranchAndBoundLabryinthSolver(boolean isVisualizing){
+    public BranchAndBoundLabryinthSolver(boolean isVisualizing, boolean isAnalysing){
         this.isVisualizing = isVisualizing;
+        this.isAnalysing = isAnalysing;
     }
 
     private static class Configuracio {
@@ -65,7 +67,7 @@ public class BranchAndBoundLabryinthSolver implements LabyrinthSolver {
         Instant end = Instant.now();
 
         int ms = (int) Duration.between(start, end).toMillis();
-        AnalysisPersitance.getInstance().fillRecord(AnalysisPersitance.WORDS_GREED, ms);
+        if(isAnalysing) AnalysisPersitance.getInstance().fillRecord(AnalysisPersitance.WORDS_GREED, ms);
         System.out.println("Temps de Durada: " + ms + " milisegons");
 
         labyrinthRenderer.render(this.laberint, translateConfiguration(resultat));

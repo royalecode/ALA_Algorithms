@@ -29,11 +29,11 @@ public class Main {
 
             builder.setWordsColumns(WORDS_COLUMNS)
                     .setWordsRows(WORDS_ROWS)
-                    .setWordsSolver(getClassSolutionWords(menu.getWordsOption(), menu.isVisualize()));
+                    .setWordsSolver(getClassSolutionWords(menu.getWordsOption()));
 
             builder.setLabyrinthColumns(LABYRINTH_COLUMNS)
                     .setLabyrinthRows(LABYRINTH_ROWS)
-                    .setLabyrinthSolver(getClassSolutionLabyrinth(menu.getLabyrinthoOption(), menu.isVisualize()));
+                    .setLabyrinthSolver(getClassSolutionLabyrinth(menu.getLabyrinthoOption()));
 
             builder.build().run();
         }
@@ -58,22 +58,22 @@ public class Main {
 //        }
     }
 
-    private static LabyrinthSolver getClassSolutionLabyrinth(int option, boolean visualize) {
-        if (option == 1) return new BacktrackingLabyrinthSolver(visualize);
-        if (option == 2) return new BacktrackingLabyrinthSolverImproved(visualize);
-        if (option == 3) return new BranchAndBoundLabryinthSolver(visualize);
+    private static LabyrinthSolver getClassSolutionLabyrinth(int option) {
+        if (option == 1) return new BacktrackingLabyrinthSolver(menu.isVisualize(), menu.isAnalyze());
+        if (option == 2) return new BacktrackingLabyrinthSolverImproved(menu.isVisualize(), menu.isAnalyze());
+        if (option == 3) return new BranchAndBoundLabryinthSolver(menu.isVisualize(), menu.isAnalyze());
         return null;
     }
 
-    private static WordsSolver getClassSolutionWords(int option, boolean visualize) {
-        if (option == 1) return new GreedyWordsSolver(visualize);
-        if (option == 2) return new BacktrackingWordsSolver();
+    private static WordsSolver getClassSolutionWords(int option) {
+        if (option == 1) return new GreedyWordsSolver(menu.isVisualize(), menu.isAnalyze());
+        if (option == 2) return new BacktrackingWordsSolver(menu.isVisualize(), menu.isAnalyze());
         return null;
     }
 
     private static void generateAnalysis(CustomArcadeBuilder builder) {
-        WordsSolver wordsAlgorithm = getClassSolutionWords(menu.getWordsOption(), false);
-        LabyrinthSolver labyrinthoAlgorithm = getClassSolutionLabyrinth(menu.getLabyrinthoOption(), false);
+        WordsSolver wordsAlgorithm = getClassSolutionWords(menu.getWordsOption());
+        LabyrinthSolver labyrinthoAlgorithm = getClassSolutionLabyrinth(menu.getLabyrinthoOption());
 
         int wordsAlgorithmId = 0;
         int labyrinthoAlgorithmId = 0;

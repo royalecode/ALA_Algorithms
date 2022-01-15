@@ -42,7 +42,7 @@ public class Coordenada {
 
     public Coordenada calcularPosicio(List<Integer> x, int k) {
         Coordenada posicio = new Coordenada(this.x, this.y);
-        for (int i = 0; i < k; i++) {
+        for (int i = 0; i <= k; i++) {
             switch (x.get(i)) {
                 case 1 -> posicio.y = posicio.y - 1;
                 case 2 -> posicio.x = posicio.x + 1;
