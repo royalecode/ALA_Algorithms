@@ -39,9 +39,6 @@ public class BacktrackingWordsSolver implements WordsSolver {
     public int[] solve(char[][] sopa, String s, WordsRenderer wordsRenderer) {
         this.sopa = sopa;
         this.LONGITUD_PARAULA = s.length();
-        if (LONGITUD_PARAULA > 4) {
-            System.out.println("debug");
-        }
         this.paraula = s;
         this.wordsRenderer = wordsRenderer;
 
@@ -62,22 +59,8 @@ public class BacktrackingWordsSolver implements WordsSolver {
             }
             wordsRenderer.render(this.sopa, s, translateConfiguration(solution, LONGITUD_PARAULA));
         }
-        try {
-            return translateConfiguration(this.solutions.get(0), LONGITUD_PARAULA);
-        } catch (Exception e) {
-            for (char[] fila: sopa) {
-                for (char c: fila) {
-                    System.out.print(c);
-                }
-                System.out.println("");
-            }
-            System.out.println("--"+paraula);
-            System.out.println(solutions);
-            this.configuracio = new ArrayList<>();
-            wordsV1(this.configuracio, 0);
+        return translateConfiguration(this.solutions.get(0), LONGITUD_PARAULA);
 
-            return null;
-        }
     }
 
     public boolean solucio(ArrayList<Coordenada> x, int k) {
