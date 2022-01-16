@@ -57,12 +57,9 @@ public class GreedyWordsSolver implements WordsSolver {
         while (!trobada && i < sopa.length) {
             j = 0;
             while (!trobada && j < sopa[i].length) {
-//                System.out.println(sopa[i][j] + " lletra de la sopa");
                 x.set(0, new Coordenada(i, j));
                 visualize(x, sopa, paraula, 1, 200);
                 if (sopa[i][j] == paraula.charAt(0)) {
-                    // System.out.println("hola");
-//                    System.out.println(i + ",,," + j);
                     trobada = comprovarParaula(sopa, paraula, i, j, x);
                 }
                 j++;
@@ -70,7 +67,6 @@ public class GreedyWordsSolver implements WordsSolver {
             i++;
         }
 
-//        System.out.println(trobada);
         return trobada ? x : null;
     }
 
@@ -90,7 +86,6 @@ public class GreedyWordsSolver implements WordsSolver {
                     j++;
                 }
             }
-//            System.out.println(s.charAt(k) + " character comparing");
             if (i >= sopa.length || j >= sopa[0].length) return false;
             if (sopa[i][j] == s.charAt(k)) x.set(k, new Coordenada(i, j));
             else return false;
@@ -115,8 +110,6 @@ public class GreedyWordsSolver implements WordsSolver {
         solution[1] = configuracio.get(0).getY();
         solution[2] = configuracio.get(numLletres - 1).getX();
         solution[3] = configuracio.get(numLletres - 1).getY();
-//        System.out.println("SOLUTION: " + configuracio.toString());
-//        System.out.println("SOLUTION: " + Arrays.toString(solution));
         return solution;
     }
 

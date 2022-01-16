@@ -49,9 +49,6 @@ public class BacktrackingWordsSolver implements WordsSolver {
         int ms = (int) Duration.between(start, end).toMillis();
         if (isAnalysing) AnalysisPersitance.getInstance().fillRecord(AnalysisPersitance.WORDS_BACK, ms);
         System.out.println("Temps de Backtracking Words: " + ms + " milisegons");
-        for (ArrayList<Coordenada> coordenadas : this.solutions) {
-//            System.out.println(coordenadas);
-        }
         for (ArrayList<Coordenada> solution : this.solutions) {
             try {
                 Thread.sleep(1500);
@@ -97,9 +94,6 @@ public class BacktrackingWordsSolver implements WordsSolver {
     }
 
     public void tractarSolucio(ArrayList<Coordenada> x) {
-        //System.out.println("soluciooon");
-        //System.out.println(x);
-        //System.out.println(this.DIRECCION);
         this.solutions.add(new ArrayList<>(x));
     }
 
@@ -165,13 +159,8 @@ public class BacktrackingWordsSolver implements WordsSolver {
         int[] solution = new int[4];
         solution[0] = configuracio.get(0).getX();
         solution[1] = configuracio.get(0).getY();
-//        System.out.println(paraula);
-//        System.out.println(numLletres);
-//        System.out.println(configuracio);
         solution[2] = configuracio.get(numLletres - 1).getX();
         solution[3] = configuracio.get(numLletres - 1).getY();
-//        System.out.println("SOLUTION: " + configuracio.toString());
-//        System.out.println("SOLUTION: " + Arrays.toString(solution));
         return solution;
     }
 }

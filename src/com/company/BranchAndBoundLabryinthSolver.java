@@ -86,17 +86,8 @@ public class BranchAndBoundLabryinthSolver implements LabyrinthSolver {
 
         nodesVius.add(configuracioArrel());
 
-//        PrintWriter writer = null;
-//        try {
-//            writer = new PrintWriter("nodes.txt", "UTF-8");
-//        } catch (Exception ignored) {}
-
         while (!nodesVius.isEmpty()) {
             x = nodesVius.poll();
-
-//            writer.println("------------------------------------------");
-//            writer.println(nodesVius);
-//            writer.println("POLL: " + x.toString());
 
             fills = expandeix(x);
             for (Configuracio fill : fills) {
@@ -119,7 +110,6 @@ public class BranchAndBoundLabryinthSolver implements LabyrinthSolver {
                 }
             }
         }
-//        writer.close();
         return Xmillor;
     }
 

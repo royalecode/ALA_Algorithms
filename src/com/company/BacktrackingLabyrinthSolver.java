@@ -118,9 +118,6 @@ public class BacktrackingLabyrinthSolver implements LabyrinthSolver {
     }
 
     public void tractarSolucio(List<Integer> x, int k) {
-        //System.out.println("Vmillor: " + k);
-        //System.out.println("Xmillor: " + x.size());
-
         if (this.Vmillor > k || this.Vmillor == -1) {
             this.Vmillor = k;
             this.Xmillor = new ArrayList<Integer>(x);

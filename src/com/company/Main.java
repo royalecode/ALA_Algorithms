@@ -7,10 +7,10 @@ import edu.salleurl.arcade.words.model.WordsSolver;
 import java.util.Date;
 
 public class Main {
-    private static final int LABYRINTH_COLUMNS = 89;
-    private static final int LABYRINTH_ROWS = 89;
-    private static final int WORDS_COLUMNS = 6;
-    private static final int WORDS_ROWS = 6;
+    private static final int LABYRINTH_COLUMNS = 51;
+    private static final int LABYRINTH_ROWS = 51;
+    private static final int WORDS_COLUMNS = 51;
+    private static final int WORDS_ROWS = 51;
     private static final int SEED = 42;
 
     private static final int ANALYSIS_ITERATIONS = 5;
@@ -25,40 +25,18 @@ public class Main {
         if (menu.isAnalyze()) {
             generateAnalysis(new CustomArcadeBuilder());
         } else {
-            for (int i = 5; i < 200; i = i + 2) {
                 ArcadeBuilder builder = new ArcadeBuilder().setSeed(SEED);
 
                 builder.setWordsColumns(WORDS_COLUMNS)
                         .setWordsRows(WORDS_ROWS)
                         .setWordsSolver(getClassSolutionWords(menu.getWordsOption()));
 
-                builder.setLabyrinthColumns(i)
-                        .setLabyrinthRows(i)
+                builder.setLabyrinthColumns(LABYRINTH_COLUMNS)
+                        .setLabyrinthRows(LABYRINTH_ROWS)
                         .setLabyrinthSolver(getClassSolutionLabyrinth(menu.getLabyrinthoOption()));
 
                 builder.build().run();
-            }
-
         }
-
-/*        builder.setLabyrinthColumns(LABYRINTH_COLUMNS)
-                .setLabyrinthRows(LABYRINTH_ROWS)
-                .setLabyrinthSolver(new BacktrackingLabyrinthSolver())
-                .build().run();
-
-        builder.setLabyrinthColumns(LABYRINTH_COLUMNS)
-                .setLabyrinthRows(LABYRINTH_ROWS)
-                .setLabyrinthSolver(new BacktrackingLabyrinthSolverImproved())
-                .build().run();*/
-
-//        for (int i = 0; i < 10; i++) {
-//            System.out.println("DIM: " + 10 * (i + 1) + "/" + 10 * (i + 1));
-//            builder.setLabyrinthColumns(10 * (i + 1))
-//                    .setLabyrinthRows(10 * (i + 1))
-//                    .setLabyrinthSolver(getClassSolutionLabyrinth(menu.getLabyrinthoOption()));
-//
-//            builder.build().run();
-//        }
     }
 
     private static LabyrinthSolver getClassSolutionLabyrinth(int option) {
@@ -101,28 +79,21 @@ public class Main {
                 wordsAlgorithm = getClassSolutionWords(menu.getWordsOption());
                 labyrinthoAlgorithm = getClassSolutionLabyrinth(menu.getLabyrinthoOption());
 
-//                AnalysisPersitance.getInstance().createRecord(labyrinthoAlgorithmId, i);
-//                AnalysisPersitance.getInstance().createRecord(wordsAlgorithmId, i);
+                AnalysisPersitance.getInstance().createRecord(labyrinthoAlgorithmId, i);
+                AnalysisPersitance.getInstance().createRecord(wordsAlgorithmId, i);
                 AnalysisPersitance.getInstance().createRecord(AnalysisPersitance.LABYRINTH_BACK, i);
                 AnalysisPersitance.getInstance().createRecord(AnalysisPersitance.LABYRINTH_BACK_IMPROVED, i);
                 AnalysisPersitance.getInstance().createRecord(wordsAlgorithmId, i);
                 System.out.println("___________________________________________");
                 System.out.println("Dimension: " + i);
 
-                builder.setWordsColumns(5)
-                        .setWordsRows(5)
+                builder.setWordsColumns(i)
+                        .setWordsRows(i)
                         .setWordsSolver(wordsAlgorithm);
 
                 builder.setLabyrinthColumns(i)
                         .setLabyrinthRows(i)
-                        .setLabyrinthSolver(new BacktrackingLabyrinthSolver(false, true));
-
-                if (builder instanceof CustomArcadeBuilder customArcadeBuilder) customArcadeBuilder.customBuild().run();
-                else builder.build().run();
-
-                builder.setLabyrinthColumns(i)
-                        .setLabyrinthRows(i)
-                        .setLabyrinthSolver(new BacktrackingLabyrinthSolverImproved(false, true));
+                        .setLabyrinthSolver(labyrinthoAlgorithm);
 
                 if (builder instanceof CustomArcadeBuilder customArcadeBuilder) customArcadeBuilder.customBuild().run();
                 else builder.build().run();
