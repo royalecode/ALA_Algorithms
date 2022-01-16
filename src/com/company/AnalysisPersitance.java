@@ -30,23 +30,27 @@ public class AnalysisPersitance {
 
     private static AnalysisPersitance instance;
 
-    private final List<Pair> LabyrinthBacktrakingData;
-    private final List<Pair> LabyrinthBacktrakingImprovedData;
-    private final List<Pair> LabyrinthBranchAndBoundData;
-    private final List<Pair> WordsBacktrakingData;
-    private final List<Pair> WordsGreedyData;
+    private List<Pair> LabyrinthBacktrakingData;
+    private List<Pair> LabyrinthBacktrakingImprovedData;
+    private List<Pair> LabyrinthBranchAndBoundData;
+    private List<Pair> WordsBacktrakingData;
+    private List<Pair> WordsGreedyData;
 
     private AnalysisPersitance() {
-        LabyrinthBacktrakingData = new ArrayList<>();
-        LabyrinthBacktrakingImprovedData = new ArrayList<>();
-        LabyrinthBranchAndBoundData = new ArrayList<>();
-        WordsBacktrakingData = new ArrayList<>();
-        WordsGreedyData = new ArrayList<>();
+        resetRecords();
     }
 
     public static AnalysisPersitance getInstance() {
         if (instance == null) instance = new AnalysisPersitance();
         return instance;
+    }
+
+    public void resetRecords(){
+        LabyrinthBacktrakingData = new ArrayList<>();
+        LabyrinthBacktrakingImprovedData = new ArrayList<>();
+        LabyrinthBranchAndBoundData = new ArrayList<>();
+        WordsBacktrakingData = new ArrayList<>();
+        WordsGreedyData = new ArrayList<>();
     }
 
     public void createRecords(int dimension){
@@ -91,7 +95,6 @@ public class AnalysisPersitance {
         FileWriter myWriter = null;
         try {
             myWriter = new FileWriter(filename);
-            System.out.println(this.toJson());
             myWriter.write(this.toJson());
             myWriter.close();
         } catch (Exception e) {

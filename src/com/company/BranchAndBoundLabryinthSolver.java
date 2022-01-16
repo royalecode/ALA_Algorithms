@@ -67,7 +67,7 @@ public class BranchAndBoundLabryinthSolver implements LabyrinthSolver {
         Instant end = Instant.now();
 
         int ms = (int) Duration.between(start, end).toMillis();
-        if(isAnalysing) AnalysisPersitance.getInstance().fillRecord(AnalysisPersitance.WORDS_GREED, ms);
+        if(isAnalysing) AnalysisPersitance.getInstance().fillRecord(AnalysisPersitance.LABYRINTH_BRANCH, ms);
         System.out.println("Temps de Branch and Bound Laberint: " + ms + " milisegons");
 
         labyrinthRenderer.render(this.laberint, translateConfiguration(resultat));

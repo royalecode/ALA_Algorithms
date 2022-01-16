@@ -26,10 +26,12 @@ public class BacktrackingLabyrinthSolverImproved extends BacktrackingLabyrinthSo
         if (k > 0) m.historial.add(k, new Coordenada(m.historial.get(k - 1).getX(), m.historial.get(k - 1).getY()));
         else m.historial.add(k, new Coordenada(ORIGEN.getX(), ORIGEN.getY()));
 
-        if (1 == x.get(k)) m.historial.get(k).setY(m.historial.get(k).getY() - 1);
-        if (2 == x.get(k)) m.historial.get(k).setX(m.historial.get(k).getX() + 1);
-        if (3 == x.get(k)) m.historial.get(k).setY(m.historial.get(k).getY() + 1);
-        if (4 == x.get(k)) m.historial.get(k).setX(m.historial.get(k).getX() - 1);
+        switch (x.get(k)) {
+            case 1 -> m.historial.get(k).setY(m.historial.get(k).getY() - 1);
+            case 2 -> m.historial.get(k).setX(m.historial.get(k).getX() + 1);
+            case 3 -> m.historial.get(k).setY(m.historial.get(k).getY() + 1);
+            case 4 -> m.historial.get(k).setX(m.historial.get(k).getX() - 1);
+        }
     }
 
     @Override
@@ -42,7 +44,7 @@ public class BacktrackingLabyrinthSolverImproved extends BacktrackingLabyrinthSo
         if (this.laberint[m.historial.get(k).getY()][m.historial.get(k).getX()].name().equals(WALL)) {
             return false;
         }
-        //comprova posicio anterior des de origen a actual
+
         for (int i = 0; i < (k - 1); i++) {
             if (m.historial.get(i).getX() == m.historial.get(k).getX()
                     && m.historial.get(i).getY() == m.historial.get(k).getY()) {
@@ -50,22 +52,12 @@ public class BacktrackingLabyrinthSolverImproved extends BacktrackingLabyrinthSo
             }
         }
 
-        //comprova posicio anterior des de actual a origen
-        /*for (int i = (k - 1); i > 0; i--) {
-            if (m.historial.get(i).getX() == m.historial.get(k).getX()
-                    && m.historial.get(i).getY() == m.historial.get(k).getY()) {
-                return false;
-            }
-        }*/
         return true;
     }
 
     @Override
     public void tractarSolucio(List<Integer> x, int k) {
-//        System.out.println("Vmillor: " + k);
-//        System.out.println("Xmillor: " + x.size());
         this.Vmillor = k;
-
         this.Xmillor = new ArrayList<Integer>(x);
     }
 
