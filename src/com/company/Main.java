@@ -98,24 +98,32 @@ public class Main {
                 wordsAlgorithm = getClassSolutionWords(menu.getWordsOption());
                 labyrinthoAlgorithm = getClassSolutionLabyrinth(menu.getLabyrinthoOption());
 
-                AnalysisPersitance.getInstance().createRecord(labyrinthoAlgorithmId, i);
+//                AnalysisPersitance.getInstance().createRecord(labyrinthoAlgorithmId, i);
+//                AnalysisPersitance.getInstance().createRecord(wordsAlgorithmId, i);
+                AnalysisPersitance.getInstance().createRecord(AnalysisPersitance.LABYRINTH_BACK, i);
+                AnalysisPersitance.getInstance().createRecord(AnalysisPersitance.LABYRINTH_BACK_IMPROVED, i);
                 AnalysisPersitance.getInstance().createRecord(wordsAlgorithmId, i);
                 System.out.println("___________________________________________");
                 System.out.println("Dimension: " + i);
 
-                builder.setWordsColumns(i)
-                        .setWordsRows(i)
+                builder.setWordsColumns(5)
+                        .setWordsRows(5)
                         .setWordsSolver(wordsAlgorithm);
 
                 builder.setLabyrinthColumns(i)
                         .setLabyrinthRows(i)
-                        .setLabyrinthSolver(labyrinthoAlgorithm);
+                        .setLabyrinthSolver(new BacktrackingLabyrinthSolver(false, true));
 
-                if (builder instanceof CustomArcadeBuilder customArcadeBuilder) {
-                    customArcadeBuilder.customBuild().run();
-                } else {
-                    builder.build().run();
-                }
+                if (builder instanceof CustomArcadeBuilder customArcadeBuilder) customArcadeBuilder.customBuild().run();
+                else builder.build().run();
+
+                builder.setLabyrinthColumns(i)
+                        .setLabyrinthRows(i)
+                        .setLabyrinthSolver(new BacktrackingLabyrinthSolverImproved(false, true));
+
+                if (builder instanceof CustomArcadeBuilder customArcadeBuilder) customArcadeBuilder.customBuild().run();
+                else builder.build().run();
+
             }
             AnalysisPersitance.getInstance().exportToFile("data" + j + ".json");
         }
