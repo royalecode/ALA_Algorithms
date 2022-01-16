@@ -36,3 +36,5 @@ Un cop allà donar-li al butó + per afegir una nova dependència del tipus JAR 
     - Greedy
     - Backtracking
 
+En cas que volgueu provar laberints o sopes de lletres de diferents dimensions, en la classe Main al principi de tot trobareu 5 constants que representen les columnes i files per laberint, i també hi ha les dues constants per la sopa de lletres, a més a més de la constant per definir la seed que considereu.
+
