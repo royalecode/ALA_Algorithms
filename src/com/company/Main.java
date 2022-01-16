@@ -9,8 +9,8 @@ import java.util.Date;
 public class Main {
     private static final int LABYRINTH_COLUMNS = 89;
     private static final int LABYRINTH_ROWS = 89;
-    private static final int WORDS_COLUMNS = 40;
-    private static final int WORDS_ROWS = 40;
+    private static final int WORDS_COLUMNS = 6;
+    private static final int WORDS_ROWS = 6;
     private static final int SEED = 42;
 
     private static final int ANALYSIS_ITERATIONS = 5;
@@ -25,17 +25,20 @@ public class Main {
         if (menu.isAnalyze()) {
             generateAnalysis(new CustomArcadeBuilder());
         } else {
-            ArcadeBuilder builder = new ArcadeBuilder().setSeed(SEED);
+            for (int i = 5; i < 200; i = i + 2) {
+                ArcadeBuilder builder = new ArcadeBuilder().setSeed(SEED);
 
-            builder.setWordsColumns(WORDS_COLUMNS)
-                    .setWordsRows(WORDS_ROWS)
-                    .setWordsSolver(getClassSolutionWords(menu.getWordsOption()));
+                builder.setWordsColumns(WORDS_COLUMNS)
+                        .setWordsRows(WORDS_ROWS)
+                        .setWordsSolver(getClassSolutionWords(menu.getWordsOption()));
 
-            builder.setLabyrinthColumns(LABYRINTH_COLUMNS)
-                    .setLabyrinthRows(LABYRINTH_ROWS)
-                    .setLabyrinthSolver(getClassSolutionLabyrinth(menu.getLabyrinthoOption()));
+                builder.setLabyrinthColumns(i)
+                        .setLabyrinthRows(i)
+                        .setLabyrinthSolver(getClassSolutionLabyrinth(menu.getLabyrinthoOption()));
 
-            builder.build().run();
+                builder.build().run();
+            }
+
         }
 
 /*        builder.setLabyrinthColumns(LABYRINTH_COLUMNS)
